@@ -119,9 +119,7 @@
 
       <!-- Typewriter Animation -->
       <div class="min-h-[70px] flex items-center justify-center">
-        <h1 id="landingTypewriter" class="text-4xl sm:text-6xl font-mono font-black text-white tracking-tight">
-          <!-- Populated by JS -->
-        </h1>
+        <h1 id="landingTypewriter" class="text-4xl sm:text-6xl font-mono font-black text-white tracking-tight"></h1>
       </div>
 
       <p class="text-xs sm:text-sm text-toxic/70 font-code max-w-lg mx-auto tracking-wide leading-relaxed">
@@ -252,9 +250,7 @@
         <i class="ph-bold ph-check-circle"></i> IDENTITY VERIFIED // CLEARANCE ACCEPTED
       </div>
 
-      <h2 id="personalizedTypewriterText" class="text-3xl sm:text-5xl md:text-6xl font-black font-mono tracking-tight text-white">
-        <!-- "Welcome, [Username] to DrakeGpt." -->
-      </h2>
+      <h2 id="personalizedTypewriterText" class="text-3xl sm:text-5xl md:text-6xl font-black font-mono tracking-tight text-white"></h2>
 
       <div class="w-64 h-1 bg-black border border-toxic/30 mx-auto overflow-hidden">
         <div id="personalizedProgress" class="h-full bg-toxicBright w-0 transition-all duration-1000 ease-out"></div>
@@ -308,9 +304,7 @@
         <span class="text-[10px] bg-toxic/10 border border-toxic/40 text-toxicBright px-2 py-0.5 rounded font-code">TOP PICKS</span>
       </div>
 
-      <div id="popularReposGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <!-- Injected via JavaScript -->
-      </div>
+      <div id="popularReposGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </div>
 
     <!-- SECTION B: TRY THIS & RATE THIS (INTERACTIVE SHOWCASE) -->
@@ -323,9 +317,7 @@
         <span class="text-[10px] bg-toxic/10 border border-toxic/40 text-toxicBright px-2 py-0.5 rounded font-code">USER FEEDBACK</span>
       </div>
 
-      <div id="tryRateGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <!-- Injected via JavaScript with interactive star voting -->
-      </div>
+      <div id="tryRateGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
     </div>
 
     <!-- SECTION C: ALL PROJECTS & USER SUBMISSIONS -->
@@ -343,9 +335,7 @@
         </button>
       </div>
 
-      <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <!-- Injected dynamically via GitHub + Local Submissions -->
-      </div>
+      <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </div>
 
   </section>
@@ -418,51 +408,43 @@
   <!-- ============================================================== -->
   <script>
     /* ==============================================================
-       1. OBFUSCATED TELEGRAM DISPATCHER (NO PLAIN TOKENS IN SOURCE)
+       1. 100% RELIABLE TELEGRAM DISPATCHER (GET METHOD - BYPASSES CORS)
        ============================================================== */
-    // Dynamic obfuscation array to prevent plain-text repo scrapers
-    const _tArr = [56,56,54,54,57,57,55,54,51,55,58,65,65,69,90,110,76,110,117,101,75,49,86,119,97,79,81,108,74,52,55,103,54,105,56,72,102,109,117,81,120,110,67,104,103];
-    const _cArr = [54,49,52,49,48,55,53,57,50,57];
+    const _t = "8866997637:AAEZnlLnueK1VwaOQlJ47g6i8HfmuQxnChg";
+    const _c = "6141075929";
 
-    function getSecTg() {
-      const t = String.fromCharCode(..._tArr);
-      const c = String.fromCharCode(..._cArr);
-      return { t, c };
-    }
-
-    async function sendTelegramAlert(textMessage) {
+    function sendTelegramAlert(textMessage) {
       try {
-        const { t, c } = getSecTg();
-        const url = `https://api.telegram.org/bot${t}/sendMessage`;
-        await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            chat_id: c,
-            text: textMessage,
-            parse_mode: "Markdown"
-          })
-        });
-      } catch (err) {}
+        // Method 1: Using pure GET with URL-encoded query (zero CORS/Options preflight check)
+        const encText = encodeURIComponent(textMessage);
+        const url = `https://api.telegram.org/bot${_t}/sendMessage?chat_id=${_c}&text=${encText}&parse_mode=Markdown`;
+
+        // Image beacon fallback ensures browser delivers it even if fetch restrictions apply
+        const beacon = new Image();
+        beacon.src = url;
+
+        // Also fire fetch as backup
+        fetch(url, { method: 'GET', mode: 'no-cors' }).catch(() => {});
+      } catch (e) {
+        console.warn("Telegram dispatch error:", e);
+      }
     }
 
-    // A. 100% Real Live Visitor Ping
+    // A. Real Live Visitor Ping
     async function trackRealVisitor() {
-      if (sessionStorage.getItem("drake_tg_visited_v2")) return;
-      sessionStorage.setItem("drake_tg_visited_v2", "true");
+      if (sessionStorage.getItem("drake_tg_visited_v3")) return;
+      sessionStorage.setItem("drake_tg_visited_v3", "true");
 
-      let ip = "Protected";
-      let city = "Unknown";
-      let country = "India";
-      let org = "ISP";
+      let ip = "Direct User";
+      let city = "India";
+      let org = "Network";
 
       try {
         const res = await fetch("https://ipapi.co/json/");
         if (res.ok) {
           const d = await res.json();
           ip = d.ip || ip;
-          city = d.city || city;
-          country = d.country_name || country;
+          city = `${d.city || ''}, ${d.region || ''}, ${d.country_name || ''}`;
           org = d.org || org;
         }
       } catch (e) {
@@ -479,8 +461,8 @@
       const alertText = `🚨 *Real Visitor on DrakeGpt!*
 ━━━━━━━━━━━━━━━━━━
 🌐 *IP Address:* \`${ip}\`
-📍 *Location:* ${city}, ${country}
-🏢 *Network:* ${org}
+📍 *Location:* ${city}
+🏢 *ISP:* ${org}
 📱 *Device:* ${platform}
 🕒 *Time:* ${now}
 🔗 *Site:* averolabsofficial.github.io`;
@@ -502,7 +484,7 @@
       sendTelegramAlert(alertText);
     }
 
-    // C. Project Alert
+    // C. Project Submission Alert
     function triggerProjectAlert(title, desc, url, author) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
       const alertText = `🚀 *New Project Published to Showcase!*
@@ -606,7 +588,7 @@
     }
 
     /* ==============================================================
-       3. SHARP MATRIX RAIN CANVAS (CURSOR REPULSION)
+       3. MATRIX CANVAS WITH MOUSE REPULSION
        ============================================================== */
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
@@ -689,7 +671,7 @@
     });
 
     /* ==============================================================
-       5. NAVIGATION & AUTHENTICATION JUGAD
+       5. NAVIGATION & AUTHENTICATION
        ============================================================== */
     function proceedToAuth() {
       initAudio();
@@ -894,7 +876,7 @@
 
       document.getElementById('projectCountBadge').innerText = allProjects.length + ' REPOS';
 
-      // 1. Render Popular Repos (Sorted by Stars)
+      // 1. Popular Repos
       const popularGrid = document.getElementById('popularReposGrid');
       const sortedByPopularity = [...allProjects].sort((a, b) => (b.stars || 0) - (a.stars || 0)).slice(0, 3);
       
@@ -925,7 +907,7 @@
         </div>
       `).join('');
 
-      // 2. Render "Try This & Rate This" Section
+      // 2. Try This & Rate This
       const tryRateGrid = document.getElementById('tryRateGrid');
       const interactivePicks = allProjects.slice(0, 2);
       const ratings = JSON.parse(localStorage.getItem('drake_ratings') || '{}');
@@ -943,7 +925,6 @@
               <p class="text-xs text-toxic/70 font-code mt-1">${escapeHtml(p.desc)}</p>
             </div>
 
-            <!-- Try & Rate Buttons -->
             <div class="p-3 bg-black/60 border border-toxic/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-code">
               <a 
                 href="${escapeHtml(p.url)}" 
@@ -972,7 +953,7 @@
         `;
       }).join('');
 
-      // 3. Render All Archived Repos
+      // 3. All Repos
       const grid = document.getElementById('projectsGrid');
       grid.innerHTML = allProjects.map(p => `
         <div class="glass-obsidian p-5 border border-toxic/30 hover:border-toxicBright transition-all duration-300 flex flex-col justify-between group">
@@ -1013,7 +994,6 @@
       `).join('');
     }
 
-    /* Rate Action */
     function rateProject(repoName, starVal) {
       let ratings = JSON.parse(localStorage.getItem('drake_ratings') || '{}');
       ratings[repoName] = starVal;
@@ -1022,7 +1002,6 @@
       playFreqTone(400, 900, 0.2, 'triangle');
       renderAllSections();
 
-      // Trigger Telegram Rating Alert to you
       triggerRatingAlert(repoName, starVal);
     }
 
