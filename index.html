@@ -277,12 +277,13 @@
       </div>
 
       <div class="flex items-center gap-3">
+        <!-- New Feedback Trigger Button -->
         <button 
-          onclick="openShareProjectModal()" 
-          class="px-4 py-2 bg-toxic text-black hover:bg-toxicBright transition-all text-xs font-bold font-code uppercase tracking-wider flex items-center gap-2 cursor-pointer"
+          onclick="openFeedbackModal('General Architecture / DrakeGpt')" 
+          class="px-4 py-2 bg-toxic text-black hover:bg-toxicBright transition-all text-xs font-bold font-code uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-toxic-glow"
         >
-          <i class="ph-bold ph-plus-circle text-base"></i>
-          <span>SHARE NEW PROJECT</span>
+          <i class="ph-bold ph-chat-circle-dots text-base"></i>
+          <span>FEEDBACK / REPORT ANOMALY</span>
         </button>
 
         <button 
@@ -341,43 +342,81 @@
   </section>
 
   <!-- ============================================================== -->
-  <!-- MODAL: SHARE PROJECT -->
+  <!-- MODAL: FEEDBACK WITH STRICT CONDUCT RULES & TELEGRAM FORWARD -->
   <!-- ============================================================== -->
-  <div id="shareModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center px-4">
-    <div class="w-full max-w-lg glass-obsidian border border-toxic/50 p-6 sm:p-8 space-y-4 shadow-2xl relative">
+  <div id="feedbackModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center px-4 overflow-y-auto py-6">
+    <div class="w-full max-w-xl glass-obsidian border border-toxic/60 p-6 sm:p-8 space-y-5 shadow-2xl relative">
+      
+      <!-- Modal Header -->
       <div class="flex items-center justify-between border-b border-toxic/20 pb-3">
         <div class="flex items-center gap-2 text-white font-bold font-code text-sm uppercase">
-          <i class="ph-bold ph-plus-circle text-toxicBright text-lg"></i>
-          <span>PUBLISH PROJECT TO SHOWCASE</span>
+          <i class="ph-bold ph-shield-warning text-toxicBright text-xl animate-pulse"></i>
+          <span>OPERATOR FEEDBACK & DEFECT LOG</span>
         </div>
-        <button onclick="closeShareProjectModal()" class="text-toxic/60 hover:text-toxic">
+        <button onclick="closeFeedbackModal()" class="text-toxic/60 hover:text-toxic">
           <i class="ph-bold ph-x text-lg"></i>
         </button>
       </div>
 
-      <form onsubmit="handleProjectSubmit(event)" class="space-y-4 text-xs font-code">
+      <!-- MANDATORY RULES & CODE OF CONDUCT CARD -->
+      <div class="p-3.5 bg-black/90 border border-toxic/30 text-xs font-code space-y-2">
+        <div class="flex items-center gap-1.5 text-toxicBright font-extrabold uppercase tracking-wider text-[11px]">
+          <i class="ph-bold ph-warning-octagon"></i> TRANSMISSION CODE OF CONDUCT:
+        </div>
+        <ul class="text-[11px] text-slate-300 space-y-1 list-disc pl-4 leading-relaxed">
+          <li><strong class="text-toxicBright">Zero Tolerance:</strong> No abusive, offensive, defamatory, or vulgar language.</li>
+          <li><strong class="text-toxicBright">Strictly Constructive:</strong> Only submit genuine bugs, architectural problems, code defects, or actionable improvements.</li>
+          <li><strong class="text-toxicBright">Professional Decorum:</strong> Be respectful in your observations and feedback.</li>
+          <li><strong class="text-toxicBright">Telemetry Binding:</strong> Your active operator callsign is permanently tagged to this report.</li>
+        </ul>
+      </div>
+
+      <!-- Feedback Form -->
+      <form onsubmit="handleFeedbackSubmit(event)" class="space-y-4 text-xs font-code">
         <div>
-          <label class="block text-toxic/80 mb-1 font-bold">PROJECT TITLE</label>
-          <input id="newProjTitle" type="text" required placeholder="e.g. Autosys Automation" class="w-full bg-black border border-toxic/30 p-2.5 text-white focus:outline-none focus:border-toxicBright font-code" />
+          <label class="block text-toxic/80 mb-1 font-bold">TARGET COMPONENT / REPOSITORY</label>
+          <input 
+            id="feedbackTarget" 
+            type="text" 
+            required 
+            readonly 
+            class="w-full bg-black/80 border border-toxic/30 p-2.5 text-white font-code focus:outline-none"
+          />
         </div>
 
         <div>
-          <label class="block text-toxic/80 mb-1 font-bold">DESCRIPTION</label>
-          <textarea id="newProjDesc" required rows="2" placeholder="Short description of the software..." class="w-full bg-black border border-toxic/30 p-2.5 text-white focus:outline-none focus:border-toxicBright font-code"></textarea>
+          <label class="block text-toxic/80 mb-1 font-bold">DEFECT CATEGORY</label>
+          <select id="feedbackCategory" class="w-full bg-black border border-toxic/30 p-2.5 text-white focus:outline-none focus:border-toxicBright font-code">
+            <option value="Bug / Logic Defect">Bug / Logic Defect</option>
+            <option value="Architecture / Performance Friction">Architecture / Performance Friction</option>
+            <option value="UI / Usability Anomaly">UI / Usability Anomaly</option>
+            <option value="Feature / Module Improvement">Feature / Module Improvement</option>
+          </select>
         </div>
 
         <div>
-          <label class="block text-toxic/80 mb-1 font-bold">GITHUB REPO / URL</label>
-          <input id="newProjUrl" type="url" required placeholder="https://github.com/averolabsofficial/..." class="w-full bg-black border border-toxic/30 p-2.5 text-white focus:outline-none focus:border-toxicBright font-code" />
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-toxic/80 font-bold">PROBLEM DESCRIPTION & OBSERVATION</label>
+            <span id="charCounter" class="text-[10px] text-toxicDim">0/500</span>
+          </div>
+          <textarea 
+            id="feedbackText" 
+            required 
+            rows="4" 
+            maxlength="500"
+            oninput="document.getElementById('charCounter').innerText = this.value.length + '/500'"
+            placeholder="Clearly articulate the defect, bug, or missing parameter you identified..." 
+            class="w-full bg-black border border-toxic/30 p-2.5 text-white focus:outline-none focus:border-toxicBright font-code leading-relaxed"
+          ></textarea>
         </div>
 
-        <div>
-          <label class="block text-toxic/80 mb-1 font-bold">TECH STACK (Comma separated)</label>
-          <input id="newProjTags" type="text" placeholder="Python, Flutter, API" class="w-full bg-black border border-toxic/30 p-2.5 text-white focus:outline-none focus:border-toxicBright font-code" />
-        </div>
-
-        <button type="submit" class="w-full py-3 bg-toxic text-black font-extrabold uppercase tracking-wider hover:bg-toxicBright transition-all cursor-pointer">
-          ADD TO SHOWCASE
+        <button 
+          type="submit" 
+          id="feedbackSubmitBtn"
+          class="w-full py-3 bg-toxic text-black font-extrabold uppercase tracking-wider hover:bg-toxicBright transition-all cursor-pointer flex items-center justify-center gap-2 shadow-toxic-glow"
+        >
+          <i class="ph-bold ph-paper-plane-tilt text-base"></i>
+          <span>DISPATCH ENCRYPTED FEEDBACK</span>
         </button>
       </form>
     </div>
@@ -430,7 +469,6 @@
         formData.append("chat_id", chatId);
         formData.append("text", plainTextMessage);
 
-        // Uses sendBeacon or fetch fallback (works even on mobile refresh/tab exit)
         if (navigator.sendBeacon) {
           navigator.sendBeacon(url, formData);
         } else {
@@ -443,8 +481,8 @@
 
     // A. Real Live Visitor Ping (Strict Session Filter - Single Alert)
     async function trackRealVisitor() {
-      if (sessionStorage.getItem("drake_v_sent_ok")) return;
-      sessionStorage.setItem("drake_v_sent_ok", "true");
+      if (sessionStorage.getItem("drake_v_sent_ok_v4")) return;
+      sessionStorage.setItem("drake_v_sent_ok_v4", "true");
 
       let ip = "Direct User";
       let locationInfo = "India";
@@ -506,17 +544,18 @@ Time: ${now}`;
       sendTelegramAlert(alertText);
     }
 
-    // D. Project Submission Alert
-    function triggerProjectAlert(title, desc, url, author) {
+    // D. Operator Feedback Forwarding to Telegram
+    function triggerFeedbackAlert(targetRepo, category, reviewText, author) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
       const alertText = 
-`🚀 NEW PROJECT SUBMITTED!
+`💬 NEW OPERATOR FEEDBACK ON DRAKEGPT!
 ━━━━━━━━━━━━━━━━━━━━
-Title: ${title}
-Author: @${author}
-Description: ${desc}
-Link: ${url}
-Time: ${now}`;
+Operator: @${author}
+Target: ${targetRepo}
+Category: ${category}
+Time: ${now}
+Observation:
+"${reviewText}"`;
 
       sendTelegramAlert(alertText);
     }
@@ -891,9 +930,7 @@ Time: ${now}`;
        7. POPULAR, TRY/RATE & SHOWCASE RENDERING + INTEREST TRACKING
        ============================================================== */
     function renderAllSections() {
-      const userProjects = JSON.parse(localStorage.getItem('avero_user_projects') || '[]');
-      const allProjects = [...userProjects, ...fetchedRepos];
-
+      const allProjects = [...fetchedRepos];
       document.getElementById('projectCountBadge').innerText = allProjects.length + ' REPOS';
 
       // 1. Popular Repos
@@ -919,7 +956,12 @@ Time: ${now}`;
             </p>
           </div>
           <div class="mt-4 pt-3 border-t border-toxic/20 flex items-center justify-between text-xs font-code">
-            <span class="text-toxicDim font-code">★ POPULAR CHOICE</span>
+            <button 
+              onclick="openFeedbackModal('${escapeHtml(p.name)}')" 
+              class="text-toxic/80 hover:text-toxicBright flex items-center gap-1 font-bold underline"
+            >
+              <i class="ph-bold ph-chat-circle-dots"></i> Report / Feedback
+            </button>
             <a 
               href="${escapeHtml(p.url)}" 
               target="_blank" 
@@ -951,14 +993,22 @@ Time: ${now}`;
             </div>
 
             <div class="p-3 bg-black/60 border border-toxic/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-code">
-              <a 
-                href="${escapeHtml(p.url)}" 
-                target="_blank" 
-                onclick="trackUserInterest('${escapeHtml(p.name)}', 'Launched Interactive Trial', '${p.lang || 'Python'}')"
-                class="px-3 py-1.5 bg-toxic text-black font-extrabold hover:bg-toxicBright transition-all flex items-center gap-1"
-              >
-                <i class="ph-bold ph-play"></i> TRY THIS NOW
-              </a>
+              <div class="flex items-center gap-2">
+                <a 
+                  href="${escapeHtml(p.url)}" 
+                  target="_blank" 
+                  onclick="trackUserInterest('${escapeHtml(p.name)}', 'Launched Interactive Trial', '${p.lang || 'Python'}')"
+                  class="px-3 py-1.5 bg-toxic text-black font-extrabold hover:bg-toxicBright transition-all flex items-center gap-1"
+                >
+                  <i class="ph-bold ph-play"></i> TRY NOW
+                </a>
+                <button 
+                  onclick="openFeedbackModal('${escapeHtml(p.name)}')" 
+                  class="px-2.5 py-1.5 border border-toxic/40 hover:border-toxic text-toxic hover:text-white transition-all flex items-center gap-1"
+                >
+                  <i class="ph-bold ph-flag"></i> Feedback
+                </button>
+              </div>
 
               <div class="flex items-center gap-1.5">
                 <span class="text-slate-400 text-[11px]">RATE:</span>
@@ -988,7 +1038,12 @@ Time: ${now}`;
               <span class="px-2 py-0.5 text-[10px] font-bold font-code bg-toxic/10 border border-toxic/40 text-toxicBright">
                 ${p.lang || 'General'}
               </span>
-              <span class="text-[10px] text-toxicDim font-code">${p.source || 'Community'}</span>
+              <button 
+                onclick="openFeedbackModal('${escapeHtml(p.name)}')" 
+                class="text-[11px] text-toxic/60 hover:text-toxicBright font-code flex items-center gap-1"
+              >
+                <i class="ph-bold ph-chat-circle-dots"></i> Feedback
+              </button>
             </div>
 
             <h3 class="text-base font-bold text-white font-mono group-hover:text-toxicBright transition-colors">
@@ -1032,50 +1087,49 @@ Time: ${now}`;
       trackUserInterest(repoName, `Rated ${starVal}/5 Stars ⭐`, techCategory);
     }
 
-    /* 8. SHARE PROJECT MODAL */
-    function openShareProjectModal() {
-      document.getElementById('shareModal').classList.remove('hidden');
+    /* ==============================================================
+       8. FEEDBACK MODAL WITH CONDUCT POLICY & TELEGRAM FORWARD
+       ============================================================== */
+    function openFeedbackModal(targetRepoName) {
+      document.getElementById('feedbackTarget').value = targetRepoName || "General Architecture / DrakeGpt";
+      document.getElementById('feedbackModal').classList.remove('hidden');
       playTick();
     }
 
-    function closeShareProjectModal() {
-      document.getElementById('shareModal').classList.add('hidden');
+    function closeFeedbackModal() {
+      document.getElementById('feedbackModal').classList.add('hidden');
       playTick();
     }
 
-    function handleProjectSubmit(e) {
+    function handleFeedbackSubmit(e) {
       e.preventDefault();
-      const title = document.getElementById('newProjTitle').value.trim();
-      const desc = document.getElementById('newProjDesc').value.trim();
-      const url = document.getElementById('newProjUrl').value.trim();
-      const tags = document.getElementById('newProjTags').value.trim() || 'Software';
+      const target = document.getElementById('feedbackTarget').value.trim();
+      const category = document.getElementById('feedbackCategory').value;
+      const reviewText = document.getElementById('feedbackText').value.trim();
 
-      if (!title || !desc || !url) return;
+      if (!reviewText) return;
 
-      const newProject = {
-        name: title,
-        desc: desc,
-        url: url,
-        stars: 1,
-        forks: 0,
-        lang: tags.split(',')[0].trim(),
-        source: `By @${activeUser}`
-      };
+      // Abusive words filter check (basic client sanitation)
+      const vulgarWords = ['bkl', 'bsdk', 'chutiya', 'madarchod', 'gandu', 'mc', 'bc', 'fuck', 'shit', 'bitch'];
+      const hasVulgar = vulgarWords.some(w => reviewText.toLowerCase().includes(w));
 
-      const userProjects = JSON.parse(localStorage.getItem('avero_user_projects') || '[]');
-      userProjects.unshift(newProject);
-      localStorage.setItem('avero_user_projects', JSON.stringify(userProjects));
+      if (hasVulgar) {
+        alert("CRITICAL WARNING: Message contains prohibited vulgar/abusive words. Comply with the code of conduct.");
+        return;
+      }
 
-      triggerProjectAlert(title, desc, url, activeUser);
+      // Dispatch to Telegram
+      triggerFeedbackAlert(target, category, reviewText, activeUser);
 
-      closeShareProjectModal();
-      playFreqTone(400, 900, 0.2, 'triangle');
-      renderAllSections();
+      // Play success tone
+      playFreqTone(400, 1100, 0.25, 'triangle');
 
-      document.getElementById('newProjTitle').value = '';
-      document.getElementById('newProjDesc').value = '';
-      document.getElementById('newProjUrl').value = '';
-      document.getElementById('newProjTags').value = '';
+      alert("FEEDBACK TRANSMITTED: Your constructive feedback has been forwarded directly to the lead architect.");
+
+      // Reset & Close
+      document.getElementById('feedbackText').value = '';
+      document.getElementById('charCounter').innerText = '0/500';
+      closeFeedbackModal();
     }
 
     function emergencyLogout() {
